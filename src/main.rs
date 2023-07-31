@@ -2,6 +2,9 @@
 #![no_main]
 #![feature(custom_test_frameworks)]
 #![test_runner(crate::test_runner)]
+#![reexport_test_harness_main = "test_main"]
+#[cfg(test)]
+pub mod tests;
 
 pub mod vga_buffer;
 
@@ -23,6 +26,9 @@ pub(crate) fn panic(info: &PanicInfo) -> ! {
 
 #[no_mangle]
 pub(crate) extern "C" fn _start() -> ! {
-    println!("Hello, world!");
+    println!(" -*-*-*- My ROS -*-*-*- ");
+    println!();
+    #[cfg(test)]
+    test_main();
     loop {}
 }

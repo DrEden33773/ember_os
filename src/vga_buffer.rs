@@ -34,8 +34,8 @@ impl ColorCode {
     ///
     /// - foreground: 8-11 bits
     /// - background: 12-14 bits
-    fn new(foreground: Color, background: Color) -> ColorCode {
-        ColorCode((background as u8) << 4 | (foreground as u8))
+    fn new(foreground: Color, background: Color) -> Self {
+        Self((background as u8) << 4 | (foreground as u8))
     }
 }
 
@@ -75,7 +75,7 @@ pub struct Writer {
 lazy_static! {
     pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
         column_position: 0,
-        color_code: ColorCode::new(Color::Cyan, Color::Black),
+        color_code: ColorCode::new(Color::White, Color::Black),
         buffer: unsafe { Buffer::static_init() },
     });
 }
