@@ -12,6 +12,7 @@ pub mod tests;
 pub mod vga_buffer;
 
 use core::panic::PanicInfo;
+#[cfg(test)]
 use test_framework::Testable;
 
 /// Entry / Main
