@@ -14,3 +14,17 @@ where
         serial_println!("[ok]");
     }
 }
+
+pub trait ShouldPanicTestable {
+    fn run(&self) -> ();
+}
+
+impl<T> ShouldPanicTestable for T
+where
+    T: Fn(),
+{
+    fn run(&self) {
+        serial_print!("{} ... ", core::any::type_name::<T>());
+        self();
+    }
+}
