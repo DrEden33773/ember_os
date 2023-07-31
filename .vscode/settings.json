@@ -5,6 +5,8 @@
   "python.formatting.provider": "none",
   "python.analysis.typeCheckingMode": "basic",
   "cSpell.words": ["bootimage"],
-  "rust-analyzer.check.allTargets": false
-  // "rust-analyzer.check.extraArgs": ["--target", "x86_64-my_ros.json"]
+  "rust-analyzer.check.allTargets": true,
+  "rust-analyzer.interpret.tests": true,
+  "rust-analyzer.check.extraArgs": ["--target", "x86_64-my_ros.json"],
+  "rust-analyzer.linkedProjects": ["./Cargo.toml", "./Cargo.toml"]
 }
