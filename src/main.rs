@@ -15,6 +15,7 @@ pub(crate) extern "C" fn _start() -> ! {
     #[cfg(test)]
     test_main();
 
+    println!(" >>>>>>> .Shell <<<<<<< \n");
     loop {}
 }
 
