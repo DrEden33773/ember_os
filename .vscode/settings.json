@@ -5,6 +5,6 @@
   "python.formatting.provider": "none",
   "python.analysis.typeCheckingMode": "basic",
   "cSpell.words": ["bootimage"],
-  "rust-analyzer.check.allTargets": false,
-  "rust-analyzer.check.extraArgs": ["--target", "x86_64-rust_os.json"]
+  "rust-analyzer.check.allTargets": false
+  // "rust-analyzer.check.extraArgs": ["--target", "x86_64-my_ros.json"]
 }
