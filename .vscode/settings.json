@@ -4,7 +4,7 @@
   },
   "python.formatting.provider": "none",
   "python.analysis.typeCheckingMode": "basic",
-  "cSpell.words": ["bootimage", "uart"],
+  "cSpell.words": ["bootimage", "uart", "Virt"],
   "rust-analyzer.check.allTargets": true,
   "rust-analyzer.interpret.tests": true,
   "rust-analyzer.check.extraArgs": ["--target", "x86_64-my_ros.json"]
