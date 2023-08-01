@@ -152,20 +152,25 @@ impl Writer {
     }
 }
 
+#[doc(hidden)]
+pub fn safe_print(args: fmt::Arguments) {
+    use x86_64::instructions::interrupts;
+
+    // access WRITER without being interrupted by signals
+    interrupts::without_interrupts(|| {
+        WRITER.lock().write_fmt(args).unwrap();
+    });
+}
+
 #[macro_export]
 macro_rules! print {
-    ($($arg:tt)*) => ($crate::vga_buffer::_print(format_args!($($arg)*)));
+    ($($arg:tt)*) => ($crate::vga_buffer::safe_print(format_args!($($arg)*)));
 }
 
 #[macro_export]
 macro_rules! println {
     () => ($crate::print!("\n"));
     ($($arg:tt)*) => ($crate::print!("{}\n", format_args!($($arg)*)));
-}
-
-#[doc(hidden)]
-pub fn _print(args: fmt::Arguments) {
-    WRITER.lock().write_fmt(args).unwrap();
 }
 
 #[test_case]
@@ -182,10 +187,19 @@ fn test_println_many() {
 
 #[test_case]
 fn test_println_output() {
-    let s = "Some test string that fits on a single line";
-    println!("{}", s);
-    for (i, c) in s.chars().enumerate() {
-        let screen_char = WRITER.lock().buffer.chars[BUFFER_HEIGHT - 2][i].read();
-        assert_eq!(char::from(screen_char.ascii_character), c);
-    }
+    use x86_64::instructions::interrupts;
+
+    let s = "A testing string which is in one line";
+    interrupts::without_interrupts(|| {
+        let mut writer = WRITER.lock();
+        /*
+            `\n` => make sure current line starts with `` instead of `.`
+            caused by the timer
+        */
+        writeln!(writer, "\n{}", s).expect("writeln failed");
+        for (i, c) in s.chars().enumerate() {
+            let screen_char = writer.buffer.chars[BUFFER_HEIGHT - 2][i].read();
+            assert_eq!(char::from(screen_char.ascii_character), c);
+        }
+    });
 }

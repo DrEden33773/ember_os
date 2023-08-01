@@ -3,10 +3,9 @@
 #![feature(custom_test_frameworks)]
 #![test_runner(my_ros::test_runner)]
 #![reexport_test_harness_main = "test_main"]
-#![allow(unused_imports)]
 
 use core::panic::PanicInfo;
-use my_ros::{demo, println};
+use my_ros::{hlt_loop, println};
 
 /// Entry / Main
 #[no_mangle]
@@ -18,10 +17,12 @@ pub(crate) extern "C" fn _start() -> ! {
     #[cfg(test)]
     test_main();
 
-    demo::run_demos();
+    println!("Successfully loaded with NO crashes!\n");
+    println!("Now, step into shell.\n");
 
     println!(" >>>>>>> .Shell <<<<<<< \n");
-    loop {}
+
+    hlt_loop()
 }
 
 /// This function is called on panic.
@@ -29,7 +30,7 @@ pub(crate) extern "C" fn _start() -> ! {
 #[panic_handler]
 pub(crate) fn panic(info: &PanicInfo) -> ! {
     println!("{}", info);
-    loop {}
+    hlt_loop()
 }
 
 #[cfg(test)]

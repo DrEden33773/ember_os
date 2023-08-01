@@ -1,0 +1,51 @@
+Date : 2023-08-01 20:10:18
+Directory : /home/eden/ProjectsRepo/my_ros
+Total : 19 files,  717 codes, 39 comments, 135 blanks, all 891 lines
+
+Languages
++----------------------+------------+------------+------------+------------+------------+
+| language             | files      | code       | comment    | blank      | total      |
++----------------------+------------+------------+------------+------------+------------+
+| Rust                 |         15 |        554 |         37 |        104 |        695 |
+| TOML                 |          3 |        157 |          2 |         26 |        185 |
+| source.markdown.math |          1 |          6 |          0 |          5 |         11 |
++----------------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                      | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                         |         19 |        717 |         39 |        135 |        891 |
+| . (Files)                                                 |          3 |        156 |          2 |         29 |        187 |
+| .cargo                                                    |          1 |          7 |          0 |          2 |          9 |
+| src                                                       |         12 |        463 |         34 |         84 |        581 |
+| src (Files)                                               |          9 |        448 |         32 |         80 |        560 |
+| src/demo                                                  |          3 |         15 |          2 |          4 |         21 |
+| tests                                                     |          3 |         91 |          3 |         20 |        114 |
++-----------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------+----------------------+------------+------------+------------+------------+
+| filename                                                  | language             | code       | comment    | blank      | total      |
++-----------------------------------------------------------+----------------------+------------+------------+------------+------------+
+| /home/eden/ProjectsRepo/my_ros/.cargo/config.toml         | TOML                 |          7 |          0 |          2 |          9 |
+| /home/eden/ProjectsRepo/my_ros/Cargo.lock                 | TOML                 |        118 |          2 |         18 |        138 |
+| /home/eden/ProjectsRepo/my_ros/Cargo.toml                 | TOML                 |         32 |          0 |          6 |         38 |
+| /home/eden/ProjectsRepo/my_ros/README.md                  | source.markdown.math |          6 |          0 |          5 |         11 |
+| /home/eden/ProjectsRepo/my_ros/src/demo/cpu_exceptions.rs | Rust                 |          4 |          0 |          1 |          5 |
+| /home/eden/ProjectsRepo/my_ros/src/demo/double_fault.rs   | Rust                 |          6 |          0 |          1 |          7 |
+| /home/eden/ProjectsRepo/my_ros/src/demo/mod.rs            | Rust                 |          5 |          2 |          2 |          9 |
+| /home/eden/ProjectsRepo/my_ros/src/exit.rs                | Rust                 |         13 |          0 |          2 |         15 |
+| /home/eden/ProjectsRepo/my_ros/src/gdt.rs                 | Rust                 |         46 |          0 |          7 |         53 |
+| /home/eden/ProjectsRepo/my_ros/src/interrupts.rs          | Rust                 |         84 |         15 |         16 |        115 |
+| /home/eden/ProjectsRepo/my_ros/src/lib.rs                 | Rust                 |         54 |          5 |          9 |         68 |
+| /home/eden/ProjectsRepo/my_ros/src/main.rs                | Rust                 |         29 |          2 |         10 |         41 |
+| /home/eden/ProjectsRepo/my_ros/src/prelude.rs             | Rust                 |          0 |          0 |          2 |          2 |
+| /home/eden/ProjectsRepo/my_ros/src/serial.rs              | Rust                 |         34 |          3 |          6 |         43 |
+| /home/eden/ProjectsRepo/my_ros/src/test_framework.rs      | Rust                 |         14 |          0 |          3 |         17 |
+| /home/eden/ProjectsRepo/my_ros/src/vga_buffer.rs          | Rust                 |        174 |          7 |         25 |        206 |
+| /home/eden/ProjectsRepo/my_ros/tests/basic_boot.rs        | Rust                 |         15 |          0 |          4 |         19 |
+| /home/eden/ProjectsRepo/my_ros/tests/should_panic.rs      | Rust                 |         27 |          0 |          5 |         32 |
+| /home/eden/ProjectsRepo/my_ros/tests/stack_overflow.rs    | Rust                 |         49 |          3 |         11 |         63 |
+| Total                                                     |                      |        717 |         39 |        135 |        891 |
++-----------------------------------------------------------+----------------------+------------+------------+------------+------------+
