@@ -40,24 +40,29 @@ extern "x86-interrupt" fn keyboard_interrupt_handler(_stack_frame: InterruptStac
     use spin::Mutex;
     use x86_64::instructions::port::Port;
 
-    // KEYBOARD
+    // KEYBOARD Pool
     lazy_static! {
         static ref KEYBOARD: Mutex<Keyboard<layouts::Us104Key, ScancodeSet1>> =
             Mutex::new(Keyboard::new(
-                ScancodeSet1::new(),
-                layouts::Us104Key,
-                HandleControl::Ignore
+                ScancodeSet1::new(), // Set-1
+                layouts::Us104Key, // US-104-Key keyboard
+                HandleControl::Ignore // Ignore mapping to Unicode
             ));
     }
 
+    // keyboard singleton
     let mut keyboard = KEYBOARD.lock();
+
+    // port <~ 0x60 (IO)
     let mut port = Port::new(0x60);
 
     let scancode: u8 = unsafe { port.read() };
     if let Ok(Some(key_event)) = keyboard.add_byte(scancode) {
         if let Some(key) = keyboard.process_keyevent(key_event) {
             match key {
+                // input := unicode_char
                 DecodedKey::Unicode(character) => print!("{}", character),
+                // input <~ human-readable event (e.g. press `CapsLock` or 'LCtrl')
                 DecodedKey::RawKey(key) => print!("{:?}", key),
             }
         }
