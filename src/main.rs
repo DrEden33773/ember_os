@@ -47,3 +47,8 @@ pub(crate) fn panic(info: &PanicInfo) -> ! {
 fn panic(info: &PanicInfo) -> ! {
     my_ros::test_panic_handler(info)
 }
+
+#[test_case]
+fn test_framework_check() {
+    println!("Make sure the user defined test framework works!");
+}
