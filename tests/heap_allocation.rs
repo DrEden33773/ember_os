@@ -42,7 +42,7 @@ fn large_vec() {
 
 #[test_case]
 fn many_boxes() {
-    const DIV: usize = 100;
+    const DIV: usize = 1;
     (0..HEAP_SIZE / DIV).for_each(|i| {
         let x = Box::new(i);
         assert_eq!(*x, i);

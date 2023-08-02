@@ -3,6 +3,7 @@ use lazy_static::lazy_static;
 use spin::Mutex;
 use volatile::Volatile;
 
+/// An `enum` type to give a `Color <-> u8` representation map
 #[allow(dead_code)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u8)]
@@ -25,26 +26,78 @@ pub enum Color {
     White = 15,
 }
 
+impl From<u8> for Color {
+    fn from(value: u8) -> Self {
+        match value {
+            0 => Self::Black,
+            1 => Self::Blue,
+            2 => Self::Green,
+            3 => Self::Cyan,
+            4 => Self::Red,
+            5 => Self::Magenta,
+            6 => Self::Brown,
+            7 => Self::LightGray,
+            8 => Self::DarkGray,
+            9 => Self::LightBlue,
+            10 => Self::LightGreen,
+            11 => Self::LightCyan,
+            12 => Self::LightRed,
+            13 => Self::Pink,
+            14 => Self::Yellow,
+            15 => Self::White,
+            _ => Self::Black,
+        }
+    }
+}
+
+/// A combination of `foreground` and `background` color, which satisfies:
+///
+/// ```rust
+/// self.0 = (background_color as u8) << 4 | (foreground_color as u8)
+/// ```
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(transparent)]
 struct ColorCode(u8);
 
+#[allow(dead_code)]
 impl ColorCode {
-    /// Note:
-    ///
-    /// - foreground: 8-11 bits
-    /// - background: 12-14 bits
     fn new(foreground: Color, background: Color) -> Self {
-        Self((background as u8) << 4 | (foreground as u8))
+        Self(((background as u8) << 4) | (foreground as u8))
+    }
+
+    fn new_raw(foreground: u8, background: u8) -> Self {
+        Self((background << 4) | foreground)
+    }
+
+    fn decrypt(&self) -> (u8, u8) {
+        (self.0 & 0x0F, (self.0 & 0xF0) >> 4)
+    }
+
+    fn get_foreground(&self) -> u8 {
+        self.decrypt().0
+    }
+
+    fn get_background(&self) -> u8 {
+        self.decrypt().1
+    }
+
+    fn set_foreground(&mut self, foreground: Color) {
+        self.0 = (self.get_background() << 4) | (foreground as u8);
+    }
+
+    fn set_background(&mut self, background: Color) {
+        self.0 = ((background as u8) << 4) | self.get_foreground();
     }
 }
 
 impl Default for ColorCode {
+    /// Default color combination (foreground := white, background := black)
     fn default() -> Self {
         Self::new(Color::White, Color::Black)
     }
 }
 
+/// Character displayed on screen, with `ascii_char` and `color_code` info
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(C)]
 struct ScreenChar {
@@ -55,12 +108,14 @@ struct ScreenChar {
 const BUFFER_HEIGHT: usize = 25;
 const BUFFER_WIDTH: usize = 80;
 
+/// VGA Buffer
 #[repr(transparent)]
 struct Buffer {
     chars: [[Volatile<ScreenChar>; BUFFER_WIDTH]; BUFFER_HEIGHT],
 }
 
 impl Buffer {
+    /// Initialize VGA Buffer (return a &'static mut Self) only once
     unsafe fn static_init() -> &'static mut Self {
         &mut *(0xb8000 as *mut Buffer)
     }
@@ -81,6 +136,7 @@ lazy_static! {
 }
 
 impl Writer {
+    /// Write a byte on the screen (in one line)
     pub fn write_byte(&mut self, byte: u8) {
         match byte {
             b'\n' => self.new_line(),
@@ -100,6 +156,7 @@ impl Writer {
         }
     }
 
+    /// Add a new line on the screen
     fn new_line(&mut self) {
         for row in 1..BUFFER_HEIGHT {
             for col in 0..BUFFER_WIDTH {
@@ -111,6 +168,7 @@ impl Writer {
         self.column_position = 0;
     }
 
+    /// Clear the lowest row (mostly used after called `vga_buffer::Writer::new_line()`)
     fn clear_row(&mut self, row: usize) {
         let blank = ScreenChar {
             ascii_character: b' ',
@@ -123,6 +181,8 @@ impl Writer {
 }
 
 impl Writer {
+    /// Write all bytes in a string on the screen
+    /// (via calling `vga_buffer::Writer::write_byte()`)
     pub fn write_string(&mut self, s: &str) {
         for byte in s.bytes() {
             match byte {
@@ -152,13 +212,26 @@ impl Writer {
     }
 }
 
-#[doc(hidden)]
 pub fn safe_print(args: fmt::Arguments) {
     use x86_64::instructions::interrupts;
 
     // access WRITER without being interrupted by signals
     interrupts::without_interrupts(|| {
         WRITER.lock().write_fmt(args).unwrap();
+    });
+}
+
+pub fn safe_eprint(args: fmt::Arguments) {
+    use x86_64::instructions::interrupts;
+
+    // access WRITER without being interrupted by signals
+    interrupts::without_interrupts(|| {
+        // WRITER.lock().write_fmt(args).unwrap();
+        let mut writer = WRITER.lock();
+        let foreground_before = writer.color_code.get_foreground();
+        writer.color_code.set_foreground(Color::Yellow);
+        writer.write_fmt(args).unwrap();
+        writer.color_code.set_foreground(foreground_before.into());
     });
 }
 
@@ -171,6 +244,17 @@ macro_rules! print {
 macro_rules! println {
     () => ($crate::print!("\n"));
     ($($arg:tt)*) => ($crate::print!("{}\n", format_args!($($arg)*)));
+}
+
+#[macro_export]
+macro_rules! eprint {
+    ($($arg:tt)*) => ($crate::vga_buffer::safe_eprint(format_args!($($arg)*)));
+}
+
+#[macro_export]
+macro_rules! eprintln {
+    () => ($crate::eprint!("\n"));
+    ($($arg:tt)*) => ($crate::eprint!("{}\n", format_args!($($arg)*)));
 }
 
 #[test_case]

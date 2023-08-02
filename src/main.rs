@@ -8,7 +8,7 @@ extern crate alloc;
 
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
-use my_ros::{demo, hlt_loop, println};
+use my_ros::{demo, eprintln, println};
 
 entry_point!(main);
 
@@ -31,15 +31,18 @@ fn main(boot_info: &'static BootInfo) -> ! {
     demo::heap_allocation::create_vec();
     demo::heap_allocation::create_reference_counted_vec();
 
-    hlt_loop()
+    eprintln!("Test eprintln");
+    println!("Test println after eprintln");
+
+    my_ros::hlt_loop()
 }
 
 /// This function is called on panic.
 #[cfg(not(test))]
 #[panic_handler]
 pub(crate) fn panic(info: &PanicInfo) -> ! {
-    println!("{}", info);
-    hlt_loop()
+    eprintln!("{}", info);
+    my_ros::hlt_loop()
 }
 
 #[cfg(test)]
@@ -50,5 +53,5 @@ fn panic(info: &PanicInfo) -> ! {
 
 #[test_case]
 fn test_framework_check() {
-    println!("Make sure the user defined test framework works!");
+    eprintln!("Make sure the user defined test framework works!");
 }
