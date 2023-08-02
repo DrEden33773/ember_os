@@ -1,16 +1,16 @@
 use crate::{serial_print, serial_println};
 
 pub trait Testable {
-  fn run(&self) -> ();
+    fn run(&self) -> ();
 }
 
 impl<T> Testable for T
 where
-  T: Fn(),
+    T: Fn(),
 {
-  fn run(&self) {
-    serial_print!("{} ... ", core::any::type_name::<T>());
-    self();
-    serial_println!("[ok]");
-  }
+    fn run(&self) {
+        serial_print!("{} ... ", core::any::type_name::<T>());
+        self();
+        serial_println!("[ok]");
+    }
 }

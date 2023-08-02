@@ -7,6 +7,6 @@ pub mod memory;
 #[inline]
 #[deprecated = "redundant"]
 pub fn run_demos() {
-  cpu_exceptions::invoke_breakpoint_exception();
-  double_fault::trigger_page_fault();
+    cpu_exceptions::invoke_breakpoint_exception();
+    double_fault::trigger_page_fault();
 }

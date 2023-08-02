@@ -30,46 +30,46 @@ entry_point!(test_kernel_main);
 /// Entry point for `cargo test`
 #[cfg(test)]
 fn test_kernel_main(_boot_info: &'static BootInfo) -> ! {
-  init();
-  test_main();
-  hlt_loop();
+    init();
+    test_main();
+    hlt_loop();
 }
 
 pub fn test_runner(tests: &[&dyn Testable]) {
-  serial_println!("\nRunning {} tests\n", tests.len());
-  for test in tests {
-    test.run();
-  }
-  serial_println!();
-  exit_qemu(QemuExitCode::Success);
+    serial_println!("\nRunning {} tests\n", tests.len());
+    for test in tests {
+        test.run();
+    }
+    serial_println!();
+    exit_qemu(QemuExitCode::Success);
 }
 
 pub fn test_panic_handler(info: &PanicInfo) -> ! {
-  serial_println!("[failed]\n");
-  serial_println!("Error: {}\n", info);
-  exit_qemu(QemuExitCode::Failed);
-  hlt_loop()
+    serial_println!("[failed]\n");
+    serial_println!("Error: {}\n", info);
+    exit_qemu(QemuExitCode::Failed);
+    hlt_loop()
 }
 
 pub fn hlt_loop() -> ! {
-  loop {
-    x86_64::instructions::hlt()
-  }
+    loop {
+        x86_64::instructions::hlt()
+    }
 }
 
 #[cfg(test)]
 #[panic_handler]
 pub fn panic(info: &PanicInfo) -> ! {
-  test_panic_handler(info)
+    test_panic_handler(info)
 }
 
 pub fn init() {
-  // gdt(tss) init
-  gdt::init();
-  // idt init
-  interrupts::init_idt();
-  // PIC init
-  unsafe { interrupts::PICS.lock().initialize() };
-  // enable listening on PIC
-  x86_64::instructions::interrupts::enable();
+    // gdt(tss) init
+    gdt::init();
+    // idt init
+    interrupts::init_idt();
+    // PIC init
+    unsafe { interrupts::PICS.lock().initialize() };
+    // enable listening on PIC
+    x86_64::instructions::interrupts::enable();
 }
