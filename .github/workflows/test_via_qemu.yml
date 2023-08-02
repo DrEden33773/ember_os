@@ -10,23 +10,20 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  qemu:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-
   build_test:
     name: Rust project
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install latest nightly
-        run: rustup component add rust-src --toolchain nightly-x86_64-unknown-linux-gnu
+      - name: Set up rust-nightly
+        run: rustup toolchain install nightly-x86_64-unknown-linux-gnu
 
       - name: Install bootimage
         run: cargo install bootimage
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
 
       - name: Build
         run: cargo bootimage --verbose
