@@ -6,7 +6,9 @@
   "python.analysis.typeCheckingMode": "basic",
   "cSpell.words": [
     "bootimage",
+    "bootinfo",
     "bootloader",
+    "dealloc",
     "keyevent",
     "Scancode",
     "uart",

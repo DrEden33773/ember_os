@@ -8,11 +8,11 @@ use core::panic::PanicInfo;
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    test_main();
-    my_ros::hlt_loop()
+  test_main();
+  my_ros::hlt_loop()
 }
 
 #[panic_handler]
 pub fn panic(info: &PanicInfo) -> ! {
-    my_ros::test_panic_handler(info)
+  my_ros::test_panic_handler(info)
 }
