@@ -1,7 +1,7 @@
 use crate::{serial_print, serial_println};
 
 pub trait Testable {
-    fn run(&self) -> ();
+    fn run(&self);
 }
 
 impl<T> Testable for T
