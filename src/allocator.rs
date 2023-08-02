@@ -1,5 +1,6 @@
 use alloc::alloc::{GlobalAlloc, Layout};
 use core::ptr::null_mut;
+use linked_list_allocator::LockedHeap;
 use x86_64::{
     structures::paging::{
         mapper::MapToError, FrameAllocator, Mapper, Page, PageTableFlags, Size4KiB,
@@ -23,12 +24,13 @@ unsafe impl GlobalAlloc for Dummy {
 }
 
 #[global_allocator]
-static ALLOCATOR: Dummy = Dummy;
+static ALLOCATOR: LockedHeap = LockedHeap::empty();
 
 pub fn init_heap(
     mapper: &mut impl Mapper<Size4KiB>,
     frame_allocator: &mut impl FrameAllocator<Size4KiB>,
 ) -> Result<(), MapToError<Size4KiB>> {
+    // get page_range
     let page_range = {
         let heap_start = VirtAddr::new(HEAP_START as u64);
         let heap_end = heap_start + HEAP_SIZE - 1u64;
@@ -37,12 +39,18 @@ pub fn init_heap(
         Page::range_inclusive(heap_start_page, heap_end_page)
     };
 
+    // map all heap pages to physical frames
     for page in page_range {
         let frame = frame_allocator
             .allocate_frame()
             .ok_or(MapToError::FrameAllocationFailed)?;
         let flags = PageTableFlags::PRESENT | PageTableFlags::WRITABLE;
         unsafe { mapper.map_to(page, frame, flags, frame_allocator)?.flush() };
+    }
+
+    // init `ALLOCATOR`
+    unsafe {
+        ALLOCATOR.lock().init(HEAP_START, HEAP_SIZE);
     }
 
     Ok(())

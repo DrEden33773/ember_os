@@ -19,18 +19,21 @@ pub mod test_framework;
 pub mod vga_buffer;
 
 #[cfg(test)]
-use bootloader::{entry_point, BootInfo};
+use bootloader::entry_point;
+use bootloader::BootInfo;
 use core::panic::PanicInfo;
 use exit::{exit_qemu, QemuExitCode};
+use memory::BootInfoFrameAllocator;
 use test_framework::Testable;
+use x86_64::VirtAddr;
 
 #[cfg(test)]
 entry_point!(test_kernel_main);
 
 /// Entry point for `cargo test`
 #[cfg(test)]
-fn test_kernel_main(_boot_info: &'static BootInfo) -> ! {
-    init();
+fn test_kernel_main(boot_info: &'static BootInfo) -> ! {
+    init(boot_info);
     test_main();
     hlt_loop();
 }
@@ -63,7 +66,7 @@ pub fn panic(info: &PanicInfo) -> ! {
     test_panic_handler(info)
 }
 
-pub fn init() {
+pub fn init(boot_info: &'static BootInfo) {
     // gdt(tss) init
     gdt::init();
     // idt init
@@ -72,4 +75,12 @@ pub fn init() {
     unsafe { interrupts::PICS.lock().initialize() };
     // enable listening on PIC
     x86_64::instructions::interrupts::enable();
+    // heap init
+    let (mut mapper, mut frame_allocator) = {
+        let phys_mem_offset = VirtAddr::new(boot_info.physical_memory_offset);
+        let mapper = unsafe { memory::init(phys_mem_offset) };
+        let frame_allocator = unsafe { BootInfoFrameAllocator::init(&boot_info.memory_map) };
+        (mapper, frame_allocator)
+    };
+    allocator::init_heap(&mut mapper, &mut frame_allocator).expect("Heap initialization failed!\n");
 }

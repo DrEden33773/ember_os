@@ -42,11 +42,3 @@ pub fn create_new_map_of_tables(boot_info: &'static BootInfo) {
     let page_ptr: *mut u64 = page.start_address().as_mut_ptr();
     unsafe { page_ptr.offset(400).write_volatile(0x_f021_f077_f065_f04e) };
 }
-
-#[test_case]
-#[ignore = "`alloc` func hasn't implemented"]
-fn test_box() {
-    use alloc::boxed::Box;
-    let x = Box::new(4);
-    assert_eq!(*x, 4);
-}

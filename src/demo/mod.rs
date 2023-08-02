@@ -2,6 +2,7 @@
 
 pub mod cpu_exceptions;
 pub mod double_fault;
+pub mod heap;
 pub mod memory;
 
 #[inline]
