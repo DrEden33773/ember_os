@@ -4,14 +4,17 @@
 #![test_runner(test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
+use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
 use my_ros::{
     exit::{exit_qemu, QemuExitCode},
     serial_print, serial_println,
 };
 
+entry_point!(main);
+
 #[no_mangle]
-pub extern "C" fn _start() -> ! {
+fn main(_boot_info: &'static BootInfo) -> ! {
     should_fail();
     serial_println!("[test did not panic]");
     exit_qemu(QemuExitCode::Failed);

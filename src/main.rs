@@ -10,11 +10,11 @@ use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
 use my_ros::{demo, hlt_loop, println};
 
-entry_point!(kernel_main);
+entry_point!(main);
 
 /// Entry / Main
 #[no_mangle]
-fn kernel_main(boot_info: &'static BootInfo) -> ! {
+fn main(boot_info: &'static BootInfo) -> ! {
     println!(" -*-*-*- My ROS -*-*-*- \n");
 
     my_ros::init(boot_info);
@@ -27,9 +27,9 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     println!(" >>>>>>> .Shell <<<<<<< \n");
 
     demo::memory::show_map_of_tables(boot_info);
-    demo::heap::create_box();
-    demo::heap::create_vec();
-    demo::heap::create_reference_counted_vec();
+    demo::heap_allocation::create_box();
+    demo::heap_allocation::create_vec();
+    demo::heap_allocation::create_reference_counted_vec();
 
     hlt_loop()
 }

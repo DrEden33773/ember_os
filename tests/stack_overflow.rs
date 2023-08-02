@@ -2,6 +2,7 @@
 #![no_main]
 #![feature(abi_x86_interrupt)]
 
+use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
 use lazy_static::lazy_static;
 use my_ros::{
@@ -40,8 +41,10 @@ pub fn init_test_idt() {
     TEST_IDT.load();
 }
 
+entry_point!(main);
+
 #[no_mangle]
-pub extern "C" fn _start() -> ! {
+fn main(_boot_info: &'static BootInfo) -> ! {
     serial_print!("\nstack_overflow::stack_overflow ... ");
 
     my_ros::gdt::init();

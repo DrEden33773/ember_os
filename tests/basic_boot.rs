@@ -4,10 +4,13 @@
 #![test_runner(my_ros::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
+use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
 
+entry_point!(main);
+
 #[no_mangle]
-pub extern "C" fn _start() -> ! {
+fn main(_boot_info: &'static BootInfo) -> ! {
     test_main();
     my_ros::hlt_loop()
 }
