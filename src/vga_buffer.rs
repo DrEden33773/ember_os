@@ -50,6 +50,12 @@ impl From<u8> for Color {
     }
 }
 
+impl Into<u8> for Color {
+    fn into(self) -> u8 {
+        self as u8
+    }
+}
+
 /// A combination of `foreground` and `background` color, which satisfies:
 ///
 /// ```rust
