@@ -46,11 +46,18 @@ impl TaskId {
     }
 }
 
+fn spawn_hardware_task(executor: &mut Executor) {
+    executor.spawn(Task::new(keyboard::print_keypresses()));
+}
+
+fn spawn_long_computations(executor: &mut Executor) {
+    executor.spawn(Task::new(concurrency::show_fib(20)));
+    executor.spawn(Task::new(concurrency::show_pi()));
+}
+
 pub fn init() -> Executor {
     let mut executor = Executor::new();
-    // keyboard
-    executor.spawn(Task::new(keyboard::print_keypresses()));
-    // crate::demo::concurrency
-    executor.spawn(Task::new(concurrency::show_fib(20)));
+    spawn_hardware_task(&mut executor);
+    spawn_long_computations(&mut executor);
     executor
 }
