@@ -10,9 +10,13 @@
     "bootloader",
     "dealloc",
     "keyevent",
+    "keypresses",
     "Scancode",
+    "scancodes",
     "uart",
-    "Virt"
+    "uninit",
+    "Virt",
+    "vtable"
   ],
   "rust-analyzer.check.allTargets": true,
   "rust-analyzer.interpret.tests": true,

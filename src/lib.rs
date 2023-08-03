@@ -3,6 +3,7 @@
 #![feature(const_mut_refs)]
 #![feature(custom_test_frameworks)]
 #![feature(abi_x86_interrupt)]
+#![feature(async_closure)]
 #![test_runner(crate::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
@@ -16,6 +17,7 @@ pub mod interrupts;
 pub mod memory;
 pub mod prelude;
 pub mod serial;
+pub mod task;
 pub mod test_framework;
 pub mod vga_buffer;
 
@@ -25,6 +27,7 @@ use bootloader::BootInfo;
 use core::panic::PanicInfo;
 use exit::{exit_qemu, QemuExitCode};
 use memory::BootInfoFrameAllocator;
+use task::simple_executor::SimpleExecutor;
 use test_framework::Testable;
 use x86_64::VirtAddr;
 
@@ -34,7 +37,7 @@ entry_point!(test_kernel_main);
 /// Entry point for `cargo test`
 #[cfg(test)]
 fn test_kernel_main(boot_info: &'static BootInfo) -> ! {
-    init(boot_info);
+    let _executor = init(boot_info);
     test_main();
     hlt_loop();
 }
@@ -67,7 +70,8 @@ pub fn panic(info: &PanicInfo) -> ! {
     test_panic_handler(info)
 }
 
-pub fn init(boot_info: &'static BootInfo) {
+#[must_use]
+pub fn init(boot_info: &'static BootInfo) -> SimpleExecutor {
     // gdt(tss) init
     gdt::init();
     // idt init
@@ -84,4 +88,6 @@ pub fn init(boot_info: &'static BootInfo) {
         (mapper, frame_allocator)
     };
     allocator::init_heap(&mut mapper, &mut frame_allocator).expect("Heap initialization failed!\n");
+    // concurrent executor init
+    task::init()
 }

@@ -16,23 +16,16 @@ entry_point!(main);
 #[no_mangle]
 fn main(boot_info: &'static BootInfo) -> ! {
     println!(" -*-*-*- My ROS -*-*-*- \n");
-
-    my_ros::init(boot_info);
+    let mut executor = my_ros::init(boot_info);
 
     #[cfg(test)]
     test_main();
 
-    println!("Successfully loaded with NO crashes!\n");
-    println!("Now, step into shell.\n");
+    println!(" ------- .Demos ------- \n");
+    demo::run_demos(boot_info);
+
     println!(" >>>>>>> .Shell <<<<<<< \n");
-
-    demo::memory::show_map_of_tables(boot_info);
-    demo::heap_allocation::create_box();
-    demo::heap_allocation::create_vec();
-    demo::heap_allocation::create_reference_counted_vec();
-
-    eprintln!("Test eprintln");
-    println!("Test println after eprintln");
+    executor.run();
 
     my_ros::hlt_loop()
 }

@@ -35,6 +35,8 @@ extern "x86-interrupt" fn timer_interrupt_handler(_stack_frame: InterruptStackFr
 }
 
 /// hook of `keyboard_interrupt`
+#[deprecated = "Should use `async` handler"]
+#[allow(dead_code)]
 extern "x86-interrupt" fn keyboard_interrupt_handler(_stack_frame: InterruptStackFrame) {
     use pc_keyboard::{layouts, DecodedKey, HandleControl, Keyboard, ScancodeSet1};
     use x86_64::instructions::port::Port;
@@ -55,7 +57,9 @@ extern "x86-interrupt" fn keyboard_interrupt_handler(_stack_frame: InterruptStac
     // port <~ 0x60 (IO)
     let mut port = Port::new(0x60);
 
+    // scancode
     let scancode: u8 = unsafe { port.read() };
+
     if let Ok(Some(key_event)) = keyboard.add_byte(scancode) {
         if let Some(key) = keyboard.process_keyevent(key_event) {
             match key {
@@ -66,6 +70,22 @@ extern "x86-interrupt" fn keyboard_interrupt_handler(_stack_frame: InterruptStac
             }
         }
     }
+
+    // handle `EOI`
+    unsafe {
+        PICS.lock()
+            .notify_end_of_interrupt(InterruptIndex::Keyboard.as_u8());
+    }
+}
+
+/// hook of `keyboard_interrupt`, with support of concurrency
+extern "x86-interrupt" fn async_keyboard_interrupt_handler(_stack_frame: InterruptStackFrame) {
+    use x86_64::instructions::port::Port;
+
+    let mut port = Port::new(0x60);
+    let scancode: u8 = unsafe { port.read() };
+
+    crate::task::keyboard::add_scancode(scancode);
 
     // handle `EOI`
     unsafe {
@@ -115,7 +135,7 @@ lazy_static! {
         // timer_interruption
         idt[InterruptIndex::Timer.as_usize()].set_handler_fn(timer_interrupt_handler);
         // keyboard_interruption
-        idt[InterruptIndex::Keyboard.as_usize()].set_handler_fn(keyboard_interrupt_handler);
+        idt[InterruptIndex::Keyboard.as_usize()].set_handler_fn(async_keyboard_interrupt_handler);
         // page_fault
         idt.page_fault.set_handler_fn(page_fault_handler);
         // ref bind
