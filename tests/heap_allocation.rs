@@ -59,3 +59,15 @@ fn rc_vec() {
     core::mem::drop(cloned_ref);
     assert_eq!(Rc::strong_count(&rc_vec), 1);
 }
+
+/// Failed |> BumpAllocator
+#[test_case]
+fn many_boxes_long_lived() {
+    let long_lived = Box::new(1); // new
+    const DIV: usize = 1;
+    (0..HEAP_SIZE / DIV).for_each(|i| {
+        let x = Box::new(i);
+        assert_eq!(*x, i);
+    });
+    assert_eq!(*long_lived, 1); // new
+}

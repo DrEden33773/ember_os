@@ -1,5 +1,10 @@
+#![allow(dead_code, unused_import_braces, unused_imports)]
+
 use alloc::alloc::{GlobalAlloc, Layout};
+use bump::BumpAllocator;
 use core::ptr::null_mut;
+use fixed_size_block::FixedSizeBlockAllocator;
+use linked_list::LinkedListAllocator;
 use linked_list_allocator::LockedHeap;
 use x86_64::{
     structures::paging::{
@@ -8,8 +13,12 @@ use x86_64::{
     VirtAddr,
 };
 
+pub mod bump;
+pub mod fixed_size_block;
+pub mod linked_list;
+
 pub const HEAP_START: usize = 0x_4444_4444_0000;
-pub const HEAP_SIZE: usize = 100 * 1024; // 100 KiB
+pub const HEAP_SIZE: usize = 128 * 1024; // 128 KiB
 
 /// `zero-sized` type
 pub struct Dummy;
@@ -23,8 +32,62 @@ unsafe impl GlobalAlloc for Dummy {
     }
 }
 
+/// A wrapper around spin::Mutex to permit trait implementations.
+pub struct Locked<T> {
+    inner: spin::Mutex<T>,
+}
+
+impl<T> Locked<T> {
+    /// Create a lock
+    pub const fn new(inner: T) -> Self {
+        Locked {
+            inner: spin::Mutex::new(inner),
+        }
+    }
+
+    /// Get the lock
+    pub fn lock(&self) -> spin::MutexGuard<T> {
+        self.inner.lock()
+    }
+}
+
+/// Align the given address `addr` upwards to alignment `align`.
+#[deprecated]
+#[allow(dead_code)]
+#[no_mangle]
+fn slow_align_up(addr: usize, align: usize) -> usize {
+    let remainder = addr % align;
+    if remainder == 0 {
+        addr // addr already aligned
+    } else {
+        addr - remainder + align
+    }
+}
+
+/// Align the given address `addr` upwards to alignment `align`.
+///
+/// Requires that `align` is a power of two.
+#[no_mangle]
+fn align_up(addr: usize, align: usize) -> usize {
+    let offset = (addr as *const u8).align_offset(align);
+    addr + offset
+}
+
+#[cfg(standard_Allocator)]
 #[global_allocator]
 static ALLOCATOR: LockedHeap = LockedHeap::empty();
+
+#[cfg(use_BumpAllocator)]
+#[global_allocator]
+static ALLOCATOR: Locked<BumpAllocator> = Locked::new(BumpAllocator::new());
+
+#[cfg(use_LinkedListAllocator)]
+#[global_allocator]
+static ALLOCATOR: Locked<LinkedListAllocator> = Locked::new(LinkedListAllocator::new());
+
+// #[cfg(use_FixedSizeBlockAllocator)]
+#[global_allocator]
+static ALLOCATOR: Locked<FixedSizeBlockAllocator> = Locked::new(FixedSizeBlockAllocator::new());
 
 pub fn init_heap(
     mapper: &mut impl Mapper<Size4KiB>,
