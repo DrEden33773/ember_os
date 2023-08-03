@@ -1,4 +1,4 @@
-use crate::println;
+use crate::{local_log_ln, println};
 use alloc::{boxed::Box, vec};
 use async_recursion::async_recursion;
 
@@ -14,8 +14,8 @@ pub async fn show_fib(n: usize) {
     for i in 0..=n {
         vec.push(fib(i).await);
     }
-    println!("Fibonacci from .0 to .{}:\n", n);
-    println!("{:?}\n", vec);
+    local_log_ln!("Fibonacci from .0 to .{} ...", n);
+    println!("Fibonacci := {:?}\n", vec);
 }
 
 pub async fn show_pi() {
@@ -31,10 +31,10 @@ pub async fn show_pi() {
     }
     let mut curr_pi = 0.0;
     const STEPS: usize = 1000;
-    println!("Calculating `PI` in {STEPS} steps:\n");
+    local_log_ln!("Calculating `PI` in {} steps ...", STEPS);
     for i in 0..STEPS {
         curr_pi = pi_quarter(i).await;
     }
     curr_pi *= 4.0;
-    println!("PI = {}\n", curr_pi);
+    println!("`PI` = {}", curr_pi);
 }

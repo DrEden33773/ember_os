@@ -241,6 +241,19 @@ pub fn safe_eprint(args: fmt::Arguments) {
     });
 }
 
+pub fn safe_local_log(args: fmt::Arguments) {
+    use x86_64::instructions::interrupts;
+
+    // access WRITER without being interrupted by signals
+    interrupts::without_interrupts(|| {
+        let mut writer = WRITER.lock();
+        let foreground_before = writer.color_code.get_foreground();
+        writer.color_code.set_foreground(Color::Cyan);
+        writer.write_fmt(args).unwrap();
+        writer.color_code.set_foreground(foreground_before.into());
+    });
+}
+
 #[macro_export]
 macro_rules! print {
     ($($arg:tt)*) => ($crate::vga_buffer::safe_print(format_args!($($arg)*)));
@@ -261,6 +274,17 @@ macro_rules! eprint {
 macro_rules! eprintln {
     () => ($crate::eprint!("\n"));
     ($($arg:tt)*) => ($crate::eprint!("{}\n", format_args!($($arg)*)));
+}
+
+#[macro_export]
+macro_rules! local_log {
+    ($($arg:tt)*) => ($crate::vga_buffer::safe_local_log(format_args!($($arg)*)));
+}
+
+#[macro_export]
+macro_rules! local_log_ln {
+    () => ($crate::local_log!("\n"));
+    ($($arg:tt)*) => ($crate::local_log!("{}\n", format_args!($($arg)*)));
 }
 
 #[test_case]

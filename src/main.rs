@@ -22,7 +22,7 @@ fn main(boot_info: &'static BootInfo) -> ! {
     test_main();
 
     println!(" ------- .Demos ------- \n");
-    demo::run_demos(boot_info);
+    demo::run_synchronous_demos(boot_info);
 
     println!(" >>>>>>> .Shell <<<<<<< \n");
     executor.run();

@@ -1,4 +1,5 @@
 use crate::{
+    local_log_ln,
     memory::{self, BootInfoFrameAllocator},
     println,
 };
@@ -7,6 +8,7 @@ use x86_64::{structures::paging::Translate, VirtAddr};
 
 #[inline]
 pub fn show_map_of_tables(boot_info: &'static BootInfo) {
+    local_log_ln!("Generated |> map_of_tables");
     let phys_mem_offset = VirtAddr::new(boot_info.physical_memory_offset);
     let mapper = unsafe { memory::init(phys_mem_offset) };
     let addresses = [
@@ -24,6 +26,7 @@ pub fn show_map_of_tables(boot_info: &'static BootInfo) {
         let phys = mapper.translate_addr(virt);
         println!("{:?} -> {:?}", virt, phys);
     }
+    println!();
 }
 
 #[inline]

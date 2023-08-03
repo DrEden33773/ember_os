@@ -1,0 +1,7 @@
+"filename", "language", "Rust", "comment", "blank", "total"
+"/home/eden/ProjectsRepo/my_ros/src/demo/heap_allocation.rs", "Rust", 1, 0, 4, 5
+"/home/eden/ProjectsRepo/my_ros/src/demo/memory.rs", "Rust", 3, 0, 0, 3
+"/home/eden/ProjectsRepo/my_ros/src/demo/mod.rs", "Rust", -2, 0, 0, -2
+"/home/eden/ProjectsRepo/my_ros/src/demo/println_eprintln.rs", "Rust", 2, 0, 0, 2
+"/home/eden/ProjectsRepo/my_ros/src/vga_buffer.rs", "Rust", 19, 1, 4, 24
+"Total", "-", 23, 1, 8, 32
