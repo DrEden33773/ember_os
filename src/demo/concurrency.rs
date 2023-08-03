@@ -20,20 +20,21 @@ pub async fn show_fib(n: usize) {
 
 pub async fn show_pi() {
     #[async_recursion]
-    async fn pi(n: usize) -> f64 {
+    async fn pi_quarter(n: usize) -> f64 {
         match n {
-            0 => 4.0,
+            0 => 1.0,
             _ => {
                 let sign = if n % 2 == 0 { 1.0 } else { -1.0 };
-                sign / (2 * n + 1) as f64 + pi(n - 1).await
+                sign / (2 * n + 1) as f64 + pi_quarter(n - 1).await
             }
         }
     }
     let mut curr_pi = 0.0;
-    const STEPS: usize = 100;
+    const STEPS: usize = 1000;
     println!("Calculating `PI` in {STEPS} steps:\n");
     for i in 0..STEPS {
-        curr_pi = pi(i).await;
+        curr_pi = pi_quarter(i).await;
     }
+    curr_pi *= 4.0;
     println!("PI = {}\n", curr_pi);
 }
