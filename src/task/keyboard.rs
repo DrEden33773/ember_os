@@ -9,15 +9,20 @@ use futures_util::{
     stream::{Stream, StreamExt},
     task::AtomicWaker,
 };
+use lazy_static::lazy_static;
 use pc_keyboard::{layouts, DecodedKey, HandleControl, Keyboard, ScancodeSet1};
 
-static SCANCODE_QUEUE: OnceCell<ArrayQueue<u8>> = OnceCell::uninit();
-static WAKER: AtomicWaker = AtomicWaker::new();
+lazy_static! {
+    static ref SCANCODE_QUEUE: OnceCell<ArrayQueue<u8>> = OnceCell::uninit();
+}
+lazy_static! {
+    static ref WAKER: AtomicWaker = AtomicWaker::new();
+}
 
 /// Called by the keyboard interrupt handler
 ///
 /// Must not block or allocate.
-pub(crate) fn add_scancode(scancode: u8) {
+pub fn add_scancode(scancode: u8) {
     if let Ok(queue) = SCANCODE_QUEUE.try_get() {
         if queue.push(scancode).is_err() {
             eprintln!("WARNING: scancode queue full; dropping keyboard input");
@@ -72,7 +77,7 @@ impl Stream for ScancodeStream {
     }
 }
 
-pub(crate) async fn print_keypresses() {
+pub async fn print_keypresses() {
     let mut scancodes = ScancodeStream::new();
     let mut keyboard = Keyboard::new(
         ScancodeSet1::new(),

@@ -12,6 +12,7 @@ pub mod executor;
 pub mod keyboard;
 pub mod simple_executor;
 
+use crate::demo::concurrency;
 use executor::Executor;
 
 #[allow(unused_imports)]
@@ -47,6 +48,9 @@ impl TaskId {
 
 pub fn init() -> Executor {
     let mut executor = Executor::new();
+    // keyboard
     executor.spawn(Task::new(keyboard::print_keypresses()));
+    // crate::demo::concurrency
+    executor.spawn(Task::new(concurrency::show_fib(20)));
     executor
 }

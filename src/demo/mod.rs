@@ -17,6 +17,5 @@ pub fn run_demos(boot_info: &'static BootInfo) {
     heap_allocation::create_vec();
     heap_allocation::create_reference_counted_vec();
     println_eprintln::show_color_diff();
-    concurrency::fibonacci_demo();
     println!();
 }

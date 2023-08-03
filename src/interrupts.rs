@@ -26,7 +26,7 @@ extern "x86-interrupt" fn double_fault_handler(
 
 /// hook of `timer_interrupt`
 extern "x86-interrupt" fn timer_interrupt_handler(_stack_frame: InterruptStackFrame) {
-    print!(".");
+    // print!(".");
     // handle `EOI`
     unsafe {
         PICS.lock()
