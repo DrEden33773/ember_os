@@ -27,7 +27,7 @@ use bootloader::BootInfo;
 use core::panic::PanicInfo;
 use exit::{exit_qemu, QemuExitCode};
 use memory::BootInfoFrameAllocator;
-use task::simple_executor::SimpleExecutor;
+use task::executor::Executor;
 use test_framework::Testable;
 use x86_64::VirtAddr;
 
@@ -71,7 +71,7 @@ pub fn panic(info: &PanicInfo) -> ! {
 }
 
 #[must_use]
-pub fn init(boot_info: &'static BootInfo) -> SimpleExecutor {
+pub fn init(boot_info: &'static BootInfo) -> Executor {
     // gdt(tss) init
     gdt::init();
     // idt init

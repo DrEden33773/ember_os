@@ -26,8 +26,6 @@ fn main(boot_info: &'static BootInfo) -> ! {
 
     println!(" >>>>>>> .Shell <<<<<<< \n");
     executor.run();
-
-    my_ros::hlt_loop()
 }
 
 /// This function is called on panic.
