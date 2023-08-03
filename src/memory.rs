@@ -25,6 +25,8 @@ pub struct BootInfoFrameAllocator {
 impl BootInfoFrameAllocator {
     /// memory_map => FrameAllocator
     ///
+    /// # Safety
+    ///
     /// Unsafe (reason: caller must ensure `memory_map` is available)
     ///
     /// (in another word, `available`-marked frame should be unused)
@@ -95,6 +97,9 @@ unsafe fn active_level_4_table(physical_memory_offset: VirtAddr) -> &'static mut
     &mut *page_table_ptr
 }
 
+/// # Safety
+///
+/// Unsafe (could only called once)
 pub unsafe fn init(physical_memory_offset: VirtAddr) -> OffsetPageTable<'static> {
     let level_4_table = active_level_4_table(physical_memory_offset);
     OffsetPageTable::new(level_4_table, physical_memory_offset)

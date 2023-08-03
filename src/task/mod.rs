@@ -45,7 +45,7 @@ impl TaskId {
     }
 }
 
-pub(crate) fn init() -> Executor {
+pub fn init() -> Executor {
     let mut executor = Executor::new();
     executor.spawn(Task::new(keyboard::print_keypresses()));
     executor

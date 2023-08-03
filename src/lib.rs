@@ -4,6 +4,7 @@
 #![feature(custom_test_frameworks)]
 #![feature(abi_x86_interrupt)]
 #![feature(async_closure)]
+#![feature(slice_ptr_len)]
 #![test_runner(crate::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
@@ -37,7 +38,7 @@ entry_point!(test_kernel_main);
 /// Entry point for `cargo test`
 #[cfg(test)]
 fn test_kernel_main(boot_info: &'static BootInfo) -> ! {
-    let _executor = init(boot_info);
+    let _ = init(boot_info);
     test_main();
     hlt_loop();
 }
@@ -88,6 +89,6 @@ pub fn init(boot_info: &'static BootInfo) -> Executor {
         (mapper, frame_allocator)
     };
     allocator::init_heap(&mut mapper, &mut frame_allocator).expect("Heap initialization failed!\n");
-    // concurrent executor init
+    // concurrency scheduler init
     task::init()
 }

@@ -50,9 +50,9 @@ impl From<u8> for Color {
     }
 }
 
-impl Into<u8> for Color {
-    fn into(self) -> u8 {
-        self as u8
+impl From<Color> for u8 {
+    fn from(val: Color) -> Self {
+        val as u8
     }
 }
 

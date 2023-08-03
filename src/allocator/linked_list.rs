@@ -38,6 +38,8 @@ impl LinkedListAllocator {
 
     /// Initialize the allocator with the given heap bounds.
     ///
+    /// # Safety
+    ///
     /// This function is `unsafe` because the caller must ensure that the given
     /// heap bounds are `valid` and that the heap is `unused`.
     ///
@@ -80,7 +82,7 @@ impl LinkedListAllocator {
 
         // look for a large enough memory region in linked list
         while let Some(ref mut region) = current.next {
-            if let Ok(alloc_start) = Self::alloc_from_region(&region, size, align) {
+            if let Ok(alloc_start) = Self::alloc_from_region(region, size, align) {
                 // region suitable for allocation -> remove node from list
                 let next = region.next.take();
                 let ret = Some((current.next.take().unwrap(), alloc_start));

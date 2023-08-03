@@ -15,7 +15,7 @@ entry_point!(main);
 
 #[no_mangle]
 fn main(boot_info: &'static BootInfo) -> ! {
-    my_ros::init(boot_info);
+    let _executor = my_ros::init(boot_info);
     test_main();
     my_ros::hlt_loop();
 }

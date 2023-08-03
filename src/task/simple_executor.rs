@@ -18,6 +18,12 @@ impl SimpleExecutor {
     }
 }
 
+impl Default for SimpleExecutor {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl SimpleExecutor {
     pub fn run(&mut self) {
         while let Some(mut task) = self.task_queue.pop_front() {
@@ -36,9 +42,8 @@ fn dummy_raw_waker() -> RawWaker {
     fn clone(_: *const ()) -> RawWaker {
         dummy_raw_waker()
     }
-
     let vtable = &RawWakerVTable::new(clone, no_op, no_op, no_op);
-    RawWaker::new(0 as *const (), vtable)
+    RawWaker::new(core::ptr::null::<()>(), vtable)
 }
 
 fn dummy_waker() -> Waker {

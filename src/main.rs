@@ -8,7 +8,7 @@ extern crate alloc;
 
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
-use my_ros::{demo, eprintln, println};
+use my_ros::{demo, eprintln, println, task};
 
 entry_point!(main);
 

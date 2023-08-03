@@ -32,6 +32,8 @@ impl FixedSizeBlockAllocator {
 
     /// Initialize the allocator with the given heap bounds.
     ///
+    /// # Safety
+    ///
     /// This function is `unsafe` because the caller must ensure that the given
     /// heap bounds are `valid` and that the heap is `unused`.
     ///
