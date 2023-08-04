@@ -132,7 +132,7 @@ fn translate_addr_inner(addr: VirtAddr, physical_memory_offset: VirtAddr) -> Opt
         frame = match entry.frame() {
             Ok(frame) => frame,
             Err(FrameError::FrameNotPresent) => return None,
-            Err(FrameError::HugeFrame) => panic!("Huge pages not supported!\n"),
+            Err(FrameError::HugeFrame) => panic!("huge pages not supported!\n"),
         };
     }
 

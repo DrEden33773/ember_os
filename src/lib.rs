@@ -87,7 +87,7 @@ pub fn init(boot_info: &'static BootInfo) -> Executor {
         let frame_allocator = unsafe { BootInfoFrameAllocator::init(&boot_info.memory_map) };
         (mapper, frame_allocator)
     };
-    allocator::init_heap(&mut mapper, &mut frame_allocator).expect("Heap initialization failed!\n");
+    allocator::init_heap(&mut mapper, &mut frame_allocator).expect("heap initialization failed!\n");
     // concurrency scheduler init
     task::init()
 }

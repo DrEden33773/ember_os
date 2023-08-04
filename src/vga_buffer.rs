@@ -310,7 +310,7 @@ fn test_println_output() {
           `\n` => make sure current line starts with `` instead of `.`
           caused by the timer
         */
-        writeln!(writer, "\n{}", s).expect("writeln failed");
+        writeln!(writer, "\n{}", s).expect("writeln failed!\n");
         for (i, c) in s.chars().enumerate() {
             let screen_char = writer.buffer.chars[BUFFER_HEIGHT - 2][i].read();
             assert_eq!(char::from(screen_char.ascii_character), c);

@@ -53,7 +53,7 @@ fn main(_boot_info: &'static BootInfo) -> ! {
     // trigger a stack overflow
     stack_overflow();
 
-    panic!("Execution continued after stack overflow\n");
+    panic!("execution continued after stack overflow!\n");
 }
 
 #[allow(unconditional_recursion)]

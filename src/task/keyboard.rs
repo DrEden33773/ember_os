@@ -42,7 +42,7 @@ impl ScancodeStream {
     pub fn new() -> Self {
         SCANCODE_QUEUE
             .try_init_once(|| ArrayQueue::new(100))
-            .expect("ScancodeStream::new should only be called once!\n");
+            .expect("`ScancodeStream::new` should only be called once!\n");
         ScancodeStream { _private: () }
     }
 }
@@ -59,7 +59,7 @@ impl Stream for ScancodeStream {
     fn poll_next(self: Pin<&mut Self>, cx: &mut Context) -> Poll<Option<u8>> {
         let queue = SCANCODE_QUEUE
             .try_get()
-            .expect("Scancode queue not initialized!\n");
+            .expect("scancode_queue not initialized!\n");
 
         // fast path
         if let Ok(scancode) = queue.pop() {
