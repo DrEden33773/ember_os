@@ -1,10 +1,13 @@
-#![allow(dead_code, unused_import_braces, unused_imports)]
+#![allow(dead_code)]
 
 use alloc::alloc::{GlobalAlloc, Layout};
+#[cfg(use_BumpAllocator)]
 use bump::BumpAllocator;
 use core::ptr::null_mut;
 use fixed_size_block::FixedSizeBlockAllocator;
+#[cfg(use_LinkedListAllocator)]
 use linked_list::LinkedListAllocator;
+#[cfg(standard_Allocator)]
 use linked_list_allocator::LockedHeap;
 use x86_64::{
     structures::paging::{

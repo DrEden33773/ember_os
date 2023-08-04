@@ -41,19 +41,16 @@ impl BumpAllocator {
 unsafe impl GlobalAlloc for Locked<BumpAllocator> {
     /// Allocate on the global bump allocator
     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
-        // get a mutable reference
         let mut bump = self.lock();
 
         let alloc_start = align_up(bump.next, layout.align());
         let alloc_end = match alloc_start.checked_add(layout.size()) {
-            // In-range => alloc_start + layout_size
             Some(end) => end,
-            // Overflow => nullptr
             None => return ptr::null_mut(),
         };
 
         if alloc_end > bump.heap_end {
-            // out of memory
+            // handle OOM (out of memory)
             ptr::null_mut()
         } else {
             bump.next = alloc_end;
@@ -67,9 +64,10 @@ unsafe impl GlobalAlloc for Locked<BumpAllocator> {
     /// This function only decrease the `allocation_counter`,
     /// which trigger `free_all` iff `allocation_counter = 0`
     unsafe fn dealloc(&self, _ptr: *mut u8, _layout: Layout) {
-        let mut bump = self.lock(); // get a mutable reference
+        let mut bump = self.lock();
 
         bump.allocations -= 1;
+
         if bump.allocations == 0 {
             bump.next = bump.heap_start;
         }

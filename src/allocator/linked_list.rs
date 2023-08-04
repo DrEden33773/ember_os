@@ -5,7 +5,7 @@ use core::{mem, ptr};
 struct ListNode {
     /// Size of current list_node
     size: usize,
-    /// Next list_node ('static for the linked_list exists for all time)
+    /// Next list_node (lifetime = 'static, for the linked_list exists for all time)
     next: Option<&'static mut ListNode>,
 }
 
@@ -50,15 +50,14 @@ impl LinkedListAllocator {
 
     /// Adds the given memory region to the front of the list.
     unsafe fn add_free_region(&mut self, addr: usize, size: usize) {
-        // Ensure: the freed region is capable of holding new list_node
         assert_eq!(
             align_up(addr, mem::align_of::<ListNode>()),
             addr,
-            "Unexpected align of free region occurs!"
+            "unexpected align of free region occurs!\n"
         );
         assert!(
             size >= mem::size_of::<ListNode>(),
-            "Remained heap_size < sizeof(ListNode)! No free region!"
+            "heap_size < sizeof(ListNode) => NO free region!\n"
         );
 
         // create a new list node and append it at the start of the list
@@ -132,7 +131,7 @@ impl LinkedListAllocator {
     fn size_align(layout: Layout) -> (usize, usize) {
         let layout = layout
             .align_to(mem::align_of::<ListNode>())
-            .expect("Adjusting alignment failed!\n")
+            .expect("adjusting alignment failed!\n")
             .pad_to_align();
         let size = layout.size().max(mem::size_of::<ListNode>());
         (size, layout.align())
@@ -147,7 +146,7 @@ unsafe impl GlobalAlloc for Locked<LinkedListAllocator> {
 
         // try to find available region
         if let Some((region, alloc_start)) = allocator.find_region(size, align) {
-            let alloc_end = alloc_start.checked_add(size).expect("Overflow!\n");
+            let alloc_end = alloc_start.checked_add(size).expect("overflow!\n");
             let excess_size = region.end_addr() - alloc_end;
             // dynamically add a free region to the tail
             if excess_size > 0 {

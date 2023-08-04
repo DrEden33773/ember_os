@@ -71,6 +71,7 @@ unsafe impl GlobalAlloc for Locked<FixedSizeBlockAllocator> {
             } else {
                 // no block exists in list => allocate new block
                 let block_size = BLOCK_SIZES[index];
+
                 // only works if all block sizes are a power of 2
                 let block_align = block_size;
                 let layout = Layout::from_size_align(block_size, block_align).unwrap();
@@ -87,9 +88,11 @@ unsafe impl GlobalAlloc for Locked<FixedSizeBlockAllocator> {
             let new_node = ListNode {
                 next: allocator.list_heads[index].take(),
             };
+
             // verify that block has size and alignment required for storing node
             assert!(mem::size_of::<ListNode>() <= BLOCK_SIZES[index]);
             assert!(mem::align_of::<ListNode>() <= BLOCK_SIZES[index]);
+
             let new_node_ptr = ptr as *mut ListNode;
             new_node_ptr.write(new_node);
             allocator.list_heads[index] = Some(&mut *new_node_ptr);
