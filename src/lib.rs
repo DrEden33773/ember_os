@@ -4,7 +4,6 @@
 #![feature(custom_test_frameworks)]
 #![feature(abi_x86_interrupt)]
 #![feature(async_closure)]
-#![feature(slice_ptr_len)]
 #![test_runner(crate::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
