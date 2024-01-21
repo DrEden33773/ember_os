@@ -11,11 +11,11 @@ entry_point!(main);
 
 #[no_mangle]
 fn main(_boot_info: &'static BootInfo) -> ! {
-    test_main();
-    my_ros::hlt_loop()
+  test_main();
+  my_ros::hlt_loop()
 }
 
 #[panic_handler]
 pub fn panic(info: &PanicInfo) -> ! {
-    my_ros::test_panic_handler(info)
+  my_ros::test_panic_handler(info)
 }
