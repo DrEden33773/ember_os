@@ -25,12 +25,12 @@ lazy_static! {
 pub fn add_scancode(scancode: u8) {
   if let Ok(queue) = SCANCODE_QUEUE.try_get() {
     if queue.push(scancode).is_err() {
-      eprintln!("WARNING: scancode queue full; dropping keyboard input");
+      eprintln!("WARNING: `scancode queue` full, dropping keyboard input");
     } else {
       WAKER.wake(); // wake
     }
   } else {
-    eprintln!("WARNING: scancode queue uninitialized");
+    eprintln!("WARNING: `scancode queue` uninitialized");
   }
 }
 

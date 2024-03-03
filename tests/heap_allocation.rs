@@ -60,7 +60,7 @@ fn rc_vec() {
   assert_eq!(Rc::strong_count(&rc_vec), 1);
 }
 
-/// Failed |> BumpAllocator
+/// Succeeded |> Failed |> BumpAllocator
 #[test_case]
 fn many_boxes_long_lived() {
   let long_lived = Box::new(1); // new

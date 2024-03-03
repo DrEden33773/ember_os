@@ -21,7 +21,7 @@ pub mod fixed_size_block;
 pub mod linked_list;
 
 pub const HEAP_START: usize = 0x_4444_4444_0000;
-pub const HEAP_SIZE: usize = 128 * 1024; // 128 KiB
+pub const HEAP_SIZE: usize = 1024 * 1024; // 1 Mega Byte
 
 /// `zero-sized` type
 pub struct Dummy;

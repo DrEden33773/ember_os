@@ -29,12 +29,11 @@ pub async fn show_pi() {
       }
     }
   }
-  let mut curr_pi = 0.0;
-  const STEPS: usize = 1000;
-  local_log_ln!("Calculating `PI` in {} steps ...", STEPS);
-  for i in 0..STEPS {
-    curr_pi = pi_quarter(i).await;
+
+  for steps in [500, 1000, 2000, 5000] {
+    local_log_ln!("Calculating `PI` in {} steps ...", steps);
+    let mut curr_pi = pi_quarter(steps).await;
+    curr_pi *= 4.0;
+    println!("`PI(.steps :: {steps})` = {}", curr_pi);
   }
-  curr_pi *= 4.0;
-  println!("`PI` = {}", curr_pi);
 }
