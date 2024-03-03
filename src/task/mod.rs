@@ -54,6 +54,7 @@ impl UsedExecutor {
 
   fn spawn_long_computation_demos(&mut self) {
     self.spawn(Task::new(concurrency::show_fib(20)));
+    self.spawn(Task::new(concurrency::cached_show_fib(60)));
     self.spawn(Task::new(concurrency::show_pi()));
   }
 }

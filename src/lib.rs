@@ -19,6 +19,7 @@ pub mod prelude;
 pub mod serial;
 pub mod task;
 pub mod test_framework;
+pub mod utils;
 pub mod vga_buffer;
 
 #[cfg(test)]

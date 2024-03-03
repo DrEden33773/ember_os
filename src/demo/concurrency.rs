@@ -1,6 +1,46 @@
-use crate::{local_log_ln, println};
+use core::num::NonZeroUsize;
+
+use crate::{local_log_ln, print, print_with_color_ln, println};
 use alloc::{boxed::Box, vec};
 use async_recursion::async_recursion;
+use lru::LruCache;
+
+pub async fn cached_show_fib(n: usize) {
+  let mut cache = LruCache::new(NonZeroUsize::new(if n >= 2 { n / 2 } else { 1 }).unwrap());
+
+  fn cached_fib(n: usize, cache: &mut LruCache<usize, usize>) -> usize {
+    match n {
+      0 | 1 => 1,
+      _ => {
+        if let Some(&result) = cache.get(&n) {
+          result
+        } else {
+          let result = cached_fib(n - 1, cache) + cached_fib(n - 2, cache);
+          cache.put(n, result);
+          result
+        }
+      }
+    }
+  }
+
+  let mut vec = vec![];
+  for i in 0..=n {
+    vec.push(cached_fib(i, &mut cache));
+  }
+  local_log_ln!("Cached @ Fibonacci from .0 to .{} ...", n);
+  print!("Cached @ Fibonacci := {:?} ... ", vec);
+
+  // assert
+  for arr in vec.windows(3) {
+    if let &[a, b, c] = arr {
+      if a + b != c {
+        print_with_color_ln!([Red] "ERR!\n");
+        return;
+      }
+    }
+  }
+  print_with_color_ln!(<Green> "OK!\n");
+}
 
 pub async fn show_fib(n: usize) {
   #[async_recursion]
@@ -15,7 +55,18 @@ pub async fn show_fib(n: usize) {
     vec.push(fib(i).await);
   }
   local_log_ln!("Fibonacci from .0 to .{} ...", n);
-  println!("Fibonacci := {:?}\n", vec);
+  print!("Fibonacci := {:?} ... ", vec);
+
+  // assert
+  for arr in vec.windows(3) {
+    if let &[a, b, c] = arr {
+      if a + b != c {
+        print_with_color_ln!({Red} "ERR!\n");
+        return;
+      }
+    }
+  }
+  print_with_color_ln!(Green, "OK!\n");
 }
 
 pub async fn show_pi() {

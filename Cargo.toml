@@ -15,6 +15,7 @@ use_SimpleExecutor = []
 use_EfficientExecutor = []
 
 [dependencies]
+lru = "0.12.3"
 cfg-if = "1.0.0"
 bootloader = { version = "0.9.23", features = ["map_physical_memory"] }
 volatile = "0.2.6"

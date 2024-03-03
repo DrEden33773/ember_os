@@ -69,23 +69,37 @@ fn align_up(addr: usize, align: usize) -> usize {
   addr + offset
 }
 
-#[cfg(feature = "standard_Allocator")]
-#[global_allocator]
-static ALLOCATOR: LockedHeap = linked_list_allocator::LockedHeap::empty();
+cfg_if::cfg_if! {
+  if #[cfg(feature = "standard_Allocator")] {
 
-#[cfg(feature = "use_BumpAllocator")]
-#[global_allocator]
-static ALLOCATOR: Locked<bump::BumpAllocator> = Locked::new(bump::BumpAllocator::new());
+    use linked_list_allocator::LockedHeap;
 
-#[cfg(feature = "use_LinkedListAllocator")]
-#[global_allocator]
-static ALLOCATOR: Locked<linked_list::LinkedListAllocator> =
-  Locked::new(linked_list::LinkedListAllocator::new());
+    #[global_allocator]
+    static ALLOCATOR: LockedHeap = LockedHeap::empty();
 
-#[cfg(feature = "use_FixedSizeBlockAllocator")]
-#[global_allocator]
-static ALLOCATOR: Locked<fixed_size_block::FixedSizeBlockAllocator> =
-  Locked::new(fixed_size_block::FixedSizeBlockAllocator::new());
+  } else if #[cfg(feature = "use_BumpAllocator")] {
+
+    use bump::BumpAllocator;
+
+    #[global_allocator]
+    static ALLOCATOR: Locked<BumpAllocator> = Locked::new(BumpAllocator::new());
+
+  } else if #[cfg(feature = "use_LinkedListAllocator")] {
+
+    use linked_list::LinkedListAllocator;
+
+    #[global_allocator]
+    static ALLOCATOR: Locked<LinkedListAllocator> = Locked::new(LinkedListAllocator::new());
+
+  } else if #[cfg(feature = "use_FixedSizeBlockAllocator")] {
+
+    use fixed_size_block::FixedSizeBlockAllocator;
+
+    #[global_allocator]
+    static ALLOCATOR: Locked<FixedSizeBlockAllocator> = Locked::new(FixedSizeBlockAllocator::new());
+
+  }
+}
 
 pub fn init_heap(
   mapper: &mut impl Mapper<Size4KiB>,

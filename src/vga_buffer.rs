@@ -238,6 +238,19 @@ impl Writer {
   }
 }
 
+pub fn safe_print_with_color(args: fmt::Arguments, color: Color) {
+  use x86_64::instructions::interrupts;
+
+  // access WRITER without being interrupted by signals
+  interrupts::without_interrupts(|| {
+    let mut writer = WRITER.lock();
+    let foreground_before = writer.color_code.get_foreground();
+    writer.color_code.set_foreground(color);
+    writer.write_fmt(args).unwrap();
+    writer.color_code.set_foreground(foreground_before.into());
+  });
+}
+
 pub fn safe_print(args: fmt::Arguments) {
   use x86_64::instructions::interrupts;
 
@@ -275,7 +288,26 @@ pub fn safe_local_log(args: fmt::Arguments) {
 }
 
 #[macro_export]
+macro_rules! print_with_color {
+    () => ($crate::print!());
+    ($color:ident, $($arg:tt)*) => ($crate::vga_buffer::safe_print_with_color(format_args!($($arg)*), $crate::vga_buffer::Color::$color));
+    (<$color:ident> $($arg:tt)*) => ($crate::vga_buffer::safe_print_with_color(format_args!($($arg)*), $crate::vga_buffer::Color::$color));
+    ([$color:ident] $($arg:tt)*) => ($crate::vga_buffer::safe_print_with_color(format_args!($($arg)*), $crate::vga_buffer::Color::$color));
+    ({$color:ident} $($arg:tt)*) => ($crate::vga_buffer::safe_print_with_color(format_args!($($arg)*), $crate::vga_buffer::Color::$color));
+}
+
+#[macro_export]
+macro_rules! print_with_color_ln {
+    () => ($crate::println!());
+    ($color:ident, $($arg:tt)*) => ($crate::print_with_color!($color, "{}\n", format_args!($($arg)*)));
+    (<$color:ident> $($arg:tt)*) => ($crate::print_with_color!(<$color> "{}\n", format_args!($($arg)*)));
+    ([$color:ident] $($arg:tt)*) => ($crate::print_with_color!([$color] "{}\n", format_args!($($arg)*)));
+    ({$color:ident} $($arg:tt)*) => ($crate::print_with_color!({$color} "{}\n", format_args!($($arg)*)));
+}
+
+#[macro_export]
 macro_rules! print {
+    () => ($crate::vga_buffer::safe_print(format_args!("")));
     ($($arg:tt)*) => ($crate::vga_buffer::safe_print(format_args!($($arg)*)));
 }
 
@@ -287,6 +319,7 @@ macro_rules! println {
 
 #[macro_export]
 macro_rules! eprint {
+    () => ($crate::vga_buffer::safe_eprint(format_args!("")));
     ($($arg:tt)*) => ($crate::vga_buffer::safe_eprint(format_args!($($arg)*)));
 }
 
@@ -298,6 +331,7 @@ macro_rules! eprintln {
 
 #[macro_export]
 macro_rules! local_log {
+    () => ($crate::vga_buffer::safe_local_log(format_args!("")));
     ($($arg:tt)*) => ($crate::vga_buffer::safe_local_log(format_args!($($arg)*)));
 }
 
