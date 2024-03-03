@@ -261,30 +261,11 @@ pub fn safe_print(args: fmt::Arguments) {
 }
 
 pub fn safe_eprint(args: fmt::Arguments) {
-  use x86_64::instructions::interrupts;
-
-  // access WRITER without being interrupted by signals
-  interrupts::without_interrupts(|| {
-    // WRITER.lock().write_fmt(args).unwrap();
-    let mut writer = WRITER.lock();
-    let foreground_before = writer.color_code.get_foreground();
-    writer.color_code.set_foreground(Color::Yellow);
-    writer.write_fmt(args).unwrap();
-    writer.color_code.set_foreground(foreground_before.into());
-  });
+  safe_print_with_color(args, Color::Yellow)
 }
 
 pub fn safe_local_log(args: fmt::Arguments) {
-  use x86_64::instructions::interrupts;
-
-  // access WRITER without being interrupted by signals
-  interrupts::without_interrupts(|| {
-    let mut writer = WRITER.lock();
-    let foreground_before = writer.color_code.get_foreground();
-    writer.color_code.set_foreground(Color::Cyan);
-    writer.write_fmt(args).unwrap();
-    writer.color_code.set_foreground(foreground_before.into());
-  });
+  safe_print_with_color(args, Color::Cyan)
 }
 
 #[macro_export]
