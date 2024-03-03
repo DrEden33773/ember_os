@@ -1,7 +1,6 @@
-# Apache License
-
+Apache License
 Version 2.0, January 2004
-<http://www.apache.org/licenses/>
+http://www.apache.org/licenses/
 
 This project includes(referenced) code from [phil-opp](https://github.com/phil-opp)'s [blog_os](https://github.com/phil-opp/blog_os), which is available under the [MIT LICENSE](https://github.com/phil-opp/blog_os/blob/main/LICENSE-MIT) and the [APACHE LICENSE](https://github.com/phil-opp/blog_os/blob/main/LICENSE-APACHE). The original code can be found at [phil-opp/blog_os](https://github.com/phil-opp/blog_os). Main extensions (differences between `this` project and `phil-opp`'s) are as follows:
 
