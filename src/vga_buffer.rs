@@ -128,6 +128,7 @@ impl Buffer {
 }
 
 pub struct Writer {
+  row_position: usize,
   column_position: usize,
   color_code: ColorCode,
   buffer: &'static mut Buffer,
@@ -135,6 +136,7 @@ pub struct Writer {
 
 lazy_static! {
   pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
+    row_position: BUFFER_HEIGHT - 1,
     column_position: 0,
     color_code: ColorCode::new(Color::White, Color::Black),
     buffer: unsafe { Buffer::static_init() },
@@ -142,20 +144,38 @@ lazy_static! {
 }
 
 impl Writer {
+  pub fn enforce_backspace(&mut self) {
+    if self.column_position > 0 {
+      self.column_position -= 1;
+    } else {
+      self.column_position = BUFFER_WIDTH - 1;
+      if self.row_position > 0 {
+        self.row_position -= 1;
+      }
+    }
+    self.buffer.chars[self.row_position][self.column_position].write(ScreenChar {
+      ascii_character: b' ',
+      color_code: self.color_code,
+    });
+  }
+
   /// Write a byte on the screen (in one line)
   pub fn write_byte(&mut self, byte: u8) {
     match byte {
       b'\n' => self.new_line(),
+      b'\r' => self.clear_row(self.row_position),
+      b'\t' => {
+        for _ in 0..4 {
+          self.write_byte(b' ');
+        }
+      }
       byte => {
         if self.column_position >= BUFFER_WIDTH {
           self.new_line();
         }
-        let row = BUFFER_HEIGHT - 1;
-        let col = self.column_position;
-        let color_code = self.color_code;
-        self.buffer.chars[row][col].write(ScreenChar {
+        self.buffer.chars[self.row_position][self.column_position].write(ScreenChar {
           ascii_character: byte,
-          color_code,
+          color_code: self.color_code,
         });
         self.column_position += 1;
       }

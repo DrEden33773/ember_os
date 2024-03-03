@@ -3,7 +3,19 @@ name = "my_ros"
 version = "0.1.0"
 edition = "2021"
 
+[features]
+default = ["use_FixedSizeBlockAllocator", "use_EfficientExecutor"]
+# allocator feauters
+use_BumpAllocator = []
+use_LinkedListAllocator = []
+use_FixedSizeBlockAllocator = []
+standard_Allocator = []
+# executor features
+use_SimpleExecutor = []
+use_EfficientExecutor = []
+
 [dependencies]
+cfg-if = "1.0.0"
 bootloader = { version = "0.9.23", features = ["map_physical_memory"] }
 volatile = "0.2.6"
 spin = "0.9.8"

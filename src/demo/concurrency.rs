@@ -36,4 +36,6 @@ pub async fn show_pi() {
     curr_pi *= 4.0;
     println!("`PI(.steps :: {steps})` = {}", curr_pi);
   }
+
+  println!();
 }

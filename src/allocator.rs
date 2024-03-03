@@ -1,14 +1,7 @@
 #![allow(dead_code)]
 
 use alloc::alloc::{GlobalAlloc, Layout};
-#[cfg(use_BumpAllocator)]
-use bump::BumpAllocator;
 use core::ptr::null_mut;
-use fixed_size_block::FixedSizeBlockAllocator;
-#[cfg(use_LinkedListAllocator)]
-use linked_list::LinkedListAllocator;
-#[cfg(standard_Allocator)]
-use linked_list_allocator::LockedHeap;
 use x86_64::{
   structures::paging::{
     mapper::MapToError, FrameAllocator, Mapper, Page, PageTableFlags, Size4KiB,
@@ -76,21 +69,23 @@ fn align_up(addr: usize, align: usize) -> usize {
   addr + offset
 }
 
-#[cfg(standard_Allocator)]
+#[cfg(feature = "standard_Allocator")]
 #[global_allocator]
-static ALLOCATOR: LockedHeap = LockedHeap::empty();
+static ALLOCATOR: LockedHeap = linked_list_allocator::LockedHeap::empty();
 
-#[cfg(use_BumpAllocator)]
+#[cfg(feature = "use_BumpAllocator")]
 #[global_allocator]
-static ALLOCATOR: Locked<BumpAllocator> = Locked::new(BumpAllocator::new());
+static ALLOCATOR: Locked<bump::BumpAllocator> = Locked::new(bump::BumpAllocator::new());
 
-#[cfg(use_LinkedListAllocator)]
+#[cfg(feature = "use_LinkedListAllocator")]
 #[global_allocator]
-static ALLOCATOR: Locked<LinkedListAllocator> = Locked::new(LinkedListAllocator::new());
+static ALLOCATOR: Locked<linked_list::LinkedListAllocator> =
+  Locked::new(linked_list::LinkedListAllocator::new());
 
-// #[cfg(use_FixedSizeBlockAllocator)]
+#[cfg(feature = "use_FixedSizeBlockAllocator")]
 #[global_allocator]
-static ALLOCATOR: Locked<FixedSizeBlockAllocator> = Locked::new(FixedSizeBlockAllocator::new());
+static ALLOCATOR: Locked<fixed_size_block::FixedSizeBlockAllocator> =
+  Locked::new(fixed_size_block::FixedSizeBlockAllocator::new());
 
 pub fn init_heap(
   mapper: &mut impl Mapper<Size4KiB>,

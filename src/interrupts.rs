@@ -1,5 +1,6 @@
-use crate::{gdt, hlt_loop, print, println};
+use crate::{gdt, hlt_loop, print, println, vga_buffer::WRITER};
 use lazy_static::lazy_static;
+use pc_keyboard::KeyCode;
 use pic8259::ChainedPics;
 use spin::Mutex;
 use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame, PageFaultErrorCode};
@@ -64,10 +65,22 @@ extern "x86-interrupt" fn keyboard_interrupt_handler(_stack_frame: InterruptStac
   if let Ok(Some(key_event)) = keyboard.add_byte(scancode) {
     if let Some(key) = keyboard.process_keyevent(key_event) {
       match key {
+        // input := <backspace>
+        DecodedKey::Unicode(character) if character as u8 == b'\x08' => {
+          x86_64::instructions::interrupts::without_interrupts(|| {
+            WRITER.lock().enforce_backspace();
+          })
+        }
         // input := unicode_char
         DecodedKey::Unicode(character) => print!("{}", character),
         // input <~ human-readable event (e.g. press `CapsLock` or 'LCtrl')
-        DecodedKey::RawKey(key) => print!("{:?}", key),
+        DecodedKey::RawKey(key) => match key {
+          KeyCode::Backspace => x86_64::instructions::interrupts::without_interrupts(|| {
+            WRITER.lock().enforce_backspace();
+          }),
+          KeyCode::LControl | KeyCode::RControl => print!("^"),
+          _ => {}
+        },
       }
     }
   }

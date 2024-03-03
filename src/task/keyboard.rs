@@ -1,4 +1,4 @@
-use crate::{eprintln, print};
+use crate::{eprintln, print, vga_buffer::WRITER};
 use conquer_once::spin::OnceCell;
 use core::{
   pin::Pin,
@@ -10,7 +10,7 @@ use futures_util::{
   task::AtomicWaker,
 };
 use lazy_static::lazy_static;
-use pc_keyboard::{layouts, DecodedKey, HandleControl, Keyboard, ScancodeSet1};
+use pc_keyboard::{layouts, DecodedKey, HandleControl, KeyCode, Keyboard, ScancodeSet1};
 
 lazy_static! {
   static ref SCANCODE_QUEUE: OnceCell<ArrayQueue<u8>> = OnceCell::uninit();
@@ -30,7 +30,7 @@ pub fn add_scancode(scancode: u8) {
       WAKER.wake(); // wake
     }
   } else {
-    eprintln!("WARNING: `scancode queue` uninitialized");
+    // eprintln!("WARNING: `scancode queue` uninitialized");
   }
 }
 
@@ -89,8 +89,22 @@ pub async fn print_keypresses() {
     if let Ok(Some(key_event)) = keyboard.add_byte(scancode) {
       if let Some(key) = keyboard.process_keyevent(key_event) {
         match key {
+          // input := <backspace>
+          DecodedKey::Unicode(character) if character as u8 == b'\x08' => {
+            x86_64::instructions::interrupts::without_interrupts(|| {
+              WRITER.lock().enforce_backspace();
+            })
+          }
+          // input := unicode_char
           DecodedKey::Unicode(character) => print!("{}", character),
-          DecodedKey::RawKey(key) => print!("{:?}", key),
+          // input <~ human-readable event (e.g. press `CapsLock` or 'LCtrl')
+          DecodedKey::RawKey(key) => match key {
+            KeyCode::Backspace => x86_64::instructions::interrupts::without_interrupts(|| {
+              WRITER.lock().enforce_backspace();
+            }),
+            KeyCode::LControl | KeyCode::RControl => print!("^"),
+            _ => {}
+          },
         }
       }
     }

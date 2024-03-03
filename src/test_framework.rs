@@ -4,10 +4,7 @@ pub trait Testable {
   fn run(&self);
 }
 
-impl<T> Testable for T
-where
-  T: Fn(),
-{
+impl<T: Fn()> Testable for T {
   fn run(&self) {
     serial_print!("{} ... ", core::any::type_name::<T>());
     self();

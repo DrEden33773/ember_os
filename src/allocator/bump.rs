@@ -1,8 +1,11 @@
+#![allow(deprecated)]
+
 use super::{align_up, Locked};
 use alloc::alloc::{GlobalAlloc, Layout};
 use core::ptr;
 
 /// Stack Allocator
+#[deprecated = "Fast! But often causes `OOM` (out of memory)"]
 pub struct BumpAllocator {
   /// bottom
   heap_start: usize,

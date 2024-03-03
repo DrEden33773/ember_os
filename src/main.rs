@@ -8,24 +8,30 @@ extern crate alloc;
 
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
-use my_ros::{demo, eprintln, println};
+use my_ros::{demo, eprintln, println, task};
 
 entry_point!(main);
 
 /// Entry / Main
 #[no_mangle]
 fn main(boot_info: &'static BootInfo) -> ! {
-  println!(" -*-*-*- My ROS -*-*-*- \n");
-  let mut executor = my_ros::init(boot_info);
-
   #[cfg(test)]
-  test_main();
+  {
+    my_ros::minimum_init(boot_info);
+    test_main();
+  }
 
-  println!(" ------- .Demos ------- \n");
+  println!(" -*-*-*- My ROS -*-*-*- \n");
+  my_ros::minimum_init(boot_info);
+
+  println!(" ------- Synchronous Demos ------- \n");
   demo::run_synchronous_demos(boot_info);
 
-  println!(" >>>>>>> .Shell <<<<<<< \n");
-  executor.run();
+  println!(" ------- Asynchronous Demos ------- \n");
+  task::init_demos_only().run_until_all_task_finished();
+
+  println!(" >>>>>>> Shell <<<<<<< \n");
+  task::init_hardwares_only().run();
 }
 
 /// This function is called on panic.

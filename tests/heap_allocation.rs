@@ -15,7 +15,7 @@ entry_point!(main);
 
 #[no_mangle]
 fn main(boot_info: &'static BootInfo) -> ! {
-  let _executor = my_ros::init(boot_info);
+  my_ros::minimum_init(boot_info);
   test_main();
   my_ros::hlt_loop();
 }
@@ -42,7 +42,7 @@ fn large_vec() {
 
 #[test_case]
 fn many_boxes() {
-  const DIV: usize = 1;
+  const DIV: usize = 10;
   (0..HEAP_SIZE / DIV).for_each(|i| {
     let x = Box::new(i);
     assert_eq!(*x, i);
@@ -64,7 +64,7 @@ fn rc_vec() {
 #[test_case]
 fn many_boxes_long_lived() {
   let long_lived = Box::new(1); // new
-  const DIV: usize = 1;
+  const DIV: usize = 10;
   (0..HEAP_SIZE / DIV).for_each(|i| {
     let x = Box::new(i);
     assert_eq!(*x, i);

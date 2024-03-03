@@ -70,6 +70,12 @@ impl Executor {
     }
   }
 
+  pub fn run_until_all_task_finished(&mut self) {
+    while !self.task_queue.is_empty() {
+      self.run_ready_tasks();
+    }
+  }
+
   fn sleep_if_idle(&self) {
     use x86_64::instructions::interrupts::{self, enable_and_hlt};
 

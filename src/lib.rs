@@ -27,7 +27,6 @@ use bootloader::BootInfo;
 use core::panic::PanicInfo;
 use exit::{exit_qemu, QemuExitCode};
 use memory::BootInfoFrameAllocator;
-use task::executor::Executor;
 use test_framework::Testable;
 use x86_64::VirtAddr;
 
@@ -37,7 +36,7 @@ entry_point!(test_kernel_main);
 /// Entry point for `cargo test`
 #[cfg(test)]
 fn test_kernel_main(boot_info: &'static BootInfo) -> ! {
-  let _ = init(boot_info);
+  minimum_init(boot_info);
   test_main();
   hlt_loop();
 }
@@ -70,8 +69,7 @@ pub fn panic(info: &PanicInfo) -> ! {
   test_panic_handler(info)
 }
 
-#[must_use]
-pub fn init(boot_info: &'static BootInfo) -> Executor {
+pub fn minimum_init(boot_info: &'static BootInfo) {
   // gdt(tss) init
   gdt::init();
   // idt init
@@ -88,6 +86,4 @@ pub fn init(boot_info: &'static BootInfo) -> Executor {
     (mapper, frame_allocator)
   };
   allocator::init_heap(&mut mapper, &mut frame_allocator).expect("heap initialization failed!\n");
-  // concurrency scheduler init
-  task::init()
 }

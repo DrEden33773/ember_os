@@ -1,3 +1,4 @@
+use crate::demo::concurrency;
 use alloc::boxed::Box;
 use core::{
   future::Future,
@@ -10,11 +11,13 @@ pub mod executor;
 pub mod keyboard;
 pub mod simple_executor;
 
-use crate::demo::concurrency;
-use executor::Executor;
-
-#[allow(unused_imports)]
-use simple_executor::SimpleExecutor;
+cfg_if::cfg_if! {
+  if #[cfg(feature = "use_SimpleExecutor")] {
+    type UsedExecutor = simple_executor::SimpleExecutor;
+  } else {
+    type UsedExecutor = executor::Executor;
+  }
+}
 
 pub struct Task {
   id: TaskId,
@@ -44,18 +47,33 @@ impl TaskId {
   }
 }
 
-fn spawn_hardware_task(executor: &mut Executor) {
-  executor.spawn(Task::new(keyboard::print_keypresses()));
+impl UsedExecutor {
+  fn spawn_hardware_task(&mut self) {
+    self.spawn(Task::new(keyboard::print_keypresses()));
+  }
+
+  fn spawn_long_computation_demos(&mut self) {
+    self.spawn(Task::new(concurrency::show_fib(20)));
+    self.spawn(Task::new(concurrency::show_pi()));
+  }
 }
 
-fn spawn_long_computations(executor: &mut Executor) {
-  executor.spawn(Task::new(concurrency::show_fib(20)));
-  executor.spawn(Task::new(concurrency::show_pi()));
+pub fn init_demos_only() -> UsedExecutor {
+  let mut executor = UsedExecutor::new();
+  executor.spawn_long_computation_demos();
+  executor
 }
 
-pub fn init() -> Executor {
-  let mut executor = Executor::new();
-  spawn_hardware_task(&mut executor);
-  spawn_long_computations(&mut executor);
+pub fn init_hardwares_only() -> UsedExecutor {
+  let mut executor = UsedExecutor::new();
+  executor.spawn_hardware_task();
+  executor
+}
+
+#[deprecated = "It will be much clear if you could separate `hardware-IO-needless demos` and `hardware-IO-related looping tasks`"]
+pub fn init() -> UsedExecutor {
+  let mut executor = UsedExecutor::new();
+  executor.spawn_hardware_task();
+  executor.spawn_long_computation_demos();
   executor
 }
