@@ -1,9 +1,15 @@
-use core::num::NonZeroUsize;
-
 use crate::{local_log_ln, print, print_with_color_ln, println};
 use alloc::{boxed::Box, vec};
 use async_recursion::async_recursion;
-use lru::LruCache;
+use core::num::NonZeroUsize;
+
+cfg_if::cfg_if! {
+  if #[cfg(feature = "use_SelfDefinedLRUCache")] {
+    type LruCache<K, V> = crate::utils::collections::lru_cache::LruCache<K, V>;
+  } else {
+    type LruCache<K, V> = lru::LruCache<K, V>;
+  }
+}
 
 pub async fn cached_show_fib(n: usize) {
   let mut cache = LruCache::new(NonZeroUsize::new(if n >= 2 { n / 2 } else { 1 }).unwrap());

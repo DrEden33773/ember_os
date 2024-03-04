@@ -190,6 +190,7 @@ dependencies = [
  "conquer-once",
  "crossbeam-queue",
  "futures-util",
+ "hashbrown",
  "lazy_static",
  "linked_list_allocator",
  "lru",

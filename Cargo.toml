@@ -4,7 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [features]
-default = ["use_FixedSizeBlockAllocator", "use_EfficientExecutor"]
+default = [
+    "use_FixedSizeBlockAllocator",
+    "use_EfficientExecutor",
+    "use_SelfDefinedLRUCache",
+]
 # allocator feauters
 use_BumpAllocator = []
 use_LinkedListAllocator = []
@@ -13,8 +17,12 @@ standard_Allocator = []
 # executor features
 use_SimpleExecutor = []
 use_EfficientExecutor = []
+# collection features
+## lru_cache features
+use_SelfDefinedLRUCache = []
 
 [dependencies]
+hashbrown = "*"
 lru = "0.12.3"
 cfg-if = "1.0.0"
 bootloader = { version = "0.9.23", features = ["map_physical_memory"] }

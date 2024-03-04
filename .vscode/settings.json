@@ -9,6 +9,7 @@
     "bootinfo",
     "bootloader",
     "dealloc",
+    "hashbrown",
     "keyevent",
     "keypresses",
     "Scancode",
@@ -20,6 +21,9 @@
   ],
   "rust-analyzer.check.allTargets": true,
   "rust-analyzer.interpret.tests": true,
-  "rust-analyzer.check.extraArgs": ["--target", "x86_64-my_ros.json"],
+  "rust-analyzer.check.extraArgs": [
+    "--target",
+    "x86_64-my_ros.json"
+  ],
   "rust-analyzer.check.command": "clippy"
 }
