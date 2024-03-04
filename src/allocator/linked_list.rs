@@ -87,10 +87,9 @@ impl LinkedListAllocator {
         let ret = Some((current.next.take().unwrap(), alloc_start));
         current.next = next;
         return ret;
-      } else {
-        // region not suitable -> continue with next region
-        current = current.next.as_mut().unwrap();
       }
+      // region not suitable -> continue with next region
+      current = current.next.as_mut().unwrap();
     }
 
     // no suitable region found

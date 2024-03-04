@@ -28,22 +28,22 @@ use_SelfDefinedLRUCache = []
 hashbrown = "*"
 lru = "0.12.3"
 cfg-if = "1.0.0"
-bootloader = { version = "0.9.23", features = ["map_physical_memory"] }
-volatile = "0.2.6"
+bootloader = { version = "*", features = ["map_physical_memory"] }
+volatile = "*"                                                     # 0.5.1
 spin = "0.9.8"
-x86_64 = "0.14.10"
-uart_16550 = "0.2.19"
+x86_64 = "*"
+uart_16550 = "*"
 pic8259 = "0.10.4"
 pc-keyboard = "0.7.0"
 async-recursion = "1.0.4"
-linked_list_allocator = "0.9.0"
+linked_list_allocator = "*"
 
 [dependencies.conquer-once]
 version = "0.4.0"
 default-features = false
 
 [dependencies.crossbeam-queue]
-version = "0.2.1"
+version = "*"
 default-features = false
 features = ["alloc"]
 
