@@ -3,7 +3,7 @@ use core::hash::Hash;
 use hashbrown::HashMap;
 
 #[derive(Debug, Default)]
-pub(crate) struct Trie<T: Hash + Eq> {
+pub struct Trie<T: Hash + Eq> {
   pub(crate) children: HashMap<T, Box<Trie<T>>>,
   pub(crate) is_end: bool,
 }

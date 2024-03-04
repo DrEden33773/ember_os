@@ -7,7 +7,7 @@ use core::{
 pub mod iter;
 
 #[derive(Default)]
-pub struct ListNode<T: Default> {
+pub(crate) struct ListNode<T: Default> {
   prev: Option<NonNull<ListNode<T>>>,
   next: Option<NonNull<ListNode<T>>>,
   value: T,

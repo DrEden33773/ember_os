@@ -10,6 +10,7 @@
 extern crate alloc;
 
 pub mod allocator;
+pub mod collections;
 pub mod demo;
 pub mod exit;
 pub mod gdt;
