@@ -1,13 +1,21 @@
 use self::greedy_extreme_path::Bounded;
 use super::*;
-use crate::utils::collections::lru_cache::LruCache;
 use alloc::collections::BinaryHeap;
 use alloc::vec;
 use alloc::vec::Vec;
 use core::cmp::Ord;
 use core::hash::Hash;
+use core::num::NonZeroUsize;
 use core::ops::{ControlFlow, Fn};
 use hashbrown::HashMap;
+
+cfg_if::cfg_if! {
+  if #[cfg(feature = "use_SelfDefinedLRUCache")] {
+    type LruCache<K, V> = crate::utils::collections::lru_cache::LruCache<K, V>;
+  } else {
+    type LruCache<K, V> = lru::LruCache<K, V>;
+  }
+}
 
 struct CacheRow<'map, Node, Val, const REVERSED: bool = false>
 where
@@ -78,7 +86,7 @@ where
     capacity: usize,
   ) -> Self {
     Self {
-      cache: LruCache::new(capacity),
+      cache: LruCache::new(NonZeroUsize::new(capacity).unwrap()),
       adj_map,
       bop,
       self_cost,
@@ -183,11 +191,11 @@ where
       return None;
     }
 
-    if !self.cache.contains_key(&src) {
+    if !self.cache.contains(&src) {
       self.build_cache(src);
     }
 
-    if let Some(dist) = self.cache.get_unwrapped(&src).cost.get(goal) {
+    if let Some(dist) = self.cache.get(&src).unwrap().cost.get(goal) {
       return Some(dist.clone());
     }
 
@@ -268,7 +276,7 @@ where
     let mut current = goal;
     while current != src {
       result.push(current.clone());
-      current = self.cache.get_unwrapped(&src).path.get(current).unwrap();
+      current = self.cache.get(&src).unwrap().path.get(current).unwrap();
     }
     result.push(src.clone());
     result.reverse();

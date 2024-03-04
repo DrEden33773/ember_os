@@ -6,6 +6,9 @@ edition = "2021"
 [features]
 default = [
     "use_FixedSizeBlockAllocator",
+    # "use_LockedHeapAllocator",
+    # "use_LinkedListAllocator",
+    # "use_BumpAllocator",
     "use_EfficientExecutor",
     "use_SelfDefinedLRUCache",
 ]
@@ -13,7 +16,7 @@ default = [
 use_BumpAllocator = []
 use_LinkedListAllocator = []
 use_FixedSizeBlockAllocator = []
-standard_Allocator = []
+use_LockedHeapAllocator = []
 # executor features
 use_SimpleExecutor = []
 use_EfficientExecutor = []

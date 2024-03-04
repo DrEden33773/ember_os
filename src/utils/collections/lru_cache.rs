@@ -224,7 +224,7 @@ impl<K: Hash + Eq, V> LruCache<K, V> {
     }
   }
 
-  pub fn contains_key(&self, key: &K) -> bool {
+  pub fn contains(&self, key: &K) -> bool {
     self.map.contains_key(key)
   }
 }
