@@ -12,6 +12,7 @@
     "hashbrown",
     "keyevent",
     "keypresses",
+    "nonoverlapping",
     "Scancode",
     "scancodes",
     "uart",

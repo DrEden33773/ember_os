@@ -1,0 +1,63 @@
+# Details
+
+Date : 2024-03-04 23:50:52
+
+Directory /home/eden/ProjectRepo/my_ros
+
+Total : 48 files,  4371 codes, 402 comments, 749 blanks, all 5522 lines
+
+[Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
+
+## Files
+| filename | language | code | comment | blank | total |
+| :--- | :--- | ---: | ---: | ---: | ---: |
+| [.cargo/config.toml](/.cargo/config.toml) | TOML | 13 | 0 | 6 | 19 |
+| [Cargo.lock](/Cargo.lock) | TOML | 322 | 2 | 45 | 369 |
+| [Cargo.toml](/Cargo.toml) | TOML | 61 | 7 | 10 | 78 |
+| [README.md](/README.md) | source.markdown.math | 11 | 0 | 8 | 19 |
+| [TODO.md](/TODO.md) | source.markdown.math | 3 | 0 | 3 | 6 |
+| [benchmarks/TODO.md](/benchmarks/TODO.md) | source.markdown.math | 3 | 0 | 2 | 5 |
+| [rustfmt.toml](/rustfmt.toml) | TOML | 1 | 0 | 1 | 2 |
+| [src/allocator.rs](/src/allocator.rs) | Rust | 94 | 11 | 28 | 133 |
+| [src/allocator/bump.rs](/src/allocator/bump.rs) | Rust | 50 | 18 | 11 | 79 |
+| [src/allocator/fixed_size_block.rs](/src/allocator/fixed_size_block.rs) | Rust | 72 | 20 | 13 | 105 |
+| [src/allocator/linked_list.rs](/src/allocator/linked_list.rs) | Rust | 104 | 43 | 20 | 167 |
+| [src/demo/concurrency.rs](/src/demo/concurrency.rs) | Rust | 86 | 2 | 11 | 99 |
+| [src/demo/cpu_exceptions.rs](/src/demo/cpu_exceptions.rs) | Rust | 4 | 0 | 1 | 5 |
+| [src/demo/double_fault.rs](/src/demo/double_fault.rs) | Rust | 6 | 0 | 1 | 7 |
+| [src/demo/heap_allocation.rs](/src/demo/heap_allocation.rs) | Rust | 22 | 0 | 8 | 30 |
+| [src/demo/memory.rs](/src/demo/memory.rs) | Rust | 36 | 6 | 6 | 48 |
+| [src/demo/mod.rs](/src/demo/mod.rs) | Rust | 13 | 3 | 4 | 20 |
+| [src/demo/println_eprintln.rs](/src/demo/println_eprintln.rs) | Rust | 8 | 0 | 2 | 10 |
+| [src/exit.rs](/src/exit.rs) | Rust | 13 | 0 | 2 | 15 |
+| [src/gdt.rs](/src/gdt.rs) | Rust | 46 | 0 | 8 | 54 |
+| [src/interrupts.rs](/src/interrupts.rs) | Rust | 121 | 26 | 24 | 171 |
+| [src/lib.rs](/src/lib.rs) | Rust | 74 | 6 | 11 | 91 |
+| [src/main.rs](/src/main.rs) | Rust | 41 | 2 | 12 | 55 |
+| [src/memory.rs](/src/memory.rs) | Rust | 94 | 31 | 22 | 147 |
+| [src/prelude.rs](/src/prelude.rs) | Rust | 0 | 0 | 2 | 2 |
+| [src/serial.rs](/src/serial.rs) | Rust | 32 | 3 | 6 | 41 |
+| [src/task/executor.rs](/src/task/executor.rs) | Rust | 103 | 5 | 17 | 125 |
+| [src/task/keyboard.rs](/src/task/keyboard.rs) | Rust | 93 | 8 | 12 | 113 |
+| [src/task/mod.rs](/src/task/mod.rs) | Rust | 68 | 0 | 13 | 81 |
+| [src/task/simple_executor.rs](/src/task/simple_executor.rs) | Rust | 44 | 0 | 8 | 52 |
+| [src/test_framework.rs](/src/test_framework.rs) | Rust | 11 | 0 | 3 | 14 |
+| [src/utils/algorithms/graph_interface/cached_greedy_extreme_path.rs](/src/utils/algorithms/graph_interface/cached_greedy_extreme_path.rs) | Rust | 441 | 75 | 64 | 580 |
+| [src/utils/algorithms/graph_interface/greedy_extreme_path.rs](/src/utils/algorithms/graph_interface/greedy_extreme_path.rs) | Rust | 409 | 77 | 64 | 550 |
+| [src/utils/algorithms/graph_interface/mod.rs](/src/utils/algorithms/graph_interface/mod.rs) | Rust | 96 | 0 | 15 | 111 |
+| [src/utils/algorithms/mod.rs](/src/utils/algorithms/mod.rs) | Rust | 1 | 0 | 1 | 2 |
+| [src/utils/collections/linked_list/iter.rs](/src/utils/collections/linked_list/iter.rs) | Rust | 109 | 0 | 16 | 125 |
+| [src/utils/collections/linked_list/mod.rs](/src/utils/collections/linked_list/mod.rs) | Rust | 414 | 2 | 72 | 488 |
+| [src/utils/collections/lru_cache.rs](/src/utils/collections/lru_cache.rs) | Rust | 212 | 26 | 35 | 273 |
+| [src/utils/collections/mod.rs](/src/utils/collections/mod.rs) | Rust | 5 | 0 | 2 | 7 |
+| [src/utils/collections/trie.rs](/src/utils/collections/trie.rs) | Rust | 81 | 0 | 15 | 96 |
+| [src/utils/collections/vec/iter.rs](/src/utils/collections/vec/iter.rs) | Rust | 115 | 0 | 16 | 131 |
+| [src/utils/collections/vec/mod.rs](/src/utils/collections/vec/mod.rs) | Rust | 376 | 0 | 45 | 421 |
+| [src/utils/collections/vec/slice.rs](/src/utils/collections/vec/slice.rs) | Rust | 26 | 6 | 10 | 42 |
+| [src/utils/mod.rs](/src/utils/mod.rs) | Rust | 2 | 0 | 1 | 3 |
+| [src/vga_buffer.rs](/src/vga_buffer.rs) | Rust | 292 | 19 | 44 | 355 |
+| [tests/heap_allocation.rs](/tests/heap_allocation.rs) | Rust | 62 | 1 | 11 | 74 |
+| [tests/should_panic.rs](/tests/should_panic.rs) | Rust | 29 | 0 | 6 | 35 |
+| [tests/stack_overflow.rs](/tests/stack_overflow.rs) | Rust | 52 | 3 | 12 | 67 |
+
+[Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)

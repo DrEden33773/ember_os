@@ -1,0 +1,84 @@
+Date : 2024-03-04 23:29:16
+Directory : /home/eden/ProjectRepo/my_ros
+Total : 43 files,  3329 codes, 394 comments, 590 blanks, all 4313 lines
+
+Languages
++----------------------+------------+------------+------------+------------+------------+
+| language             | files      | code       | comment    | blank      | total      |
++----------------------+------------+------------+------------+------------+------------+
+| Rust                 |         36 |      2,915 |        385 |        515 |      3,815 |
+| TOML                 |          4 |        397 |          9 |         62 |        468 |
+| source.markdown.math |          3 |         17 |          0 |         13 |         30 |
++----------------------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                             | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                |         43 |      3,329 |        394 |        590 |      4,313 |
+| . (Files)                                                                                        |          5 |        398 |          9 |         67 |        474 |
+| .cargo                                                                                           |          1 |         13 |          0 |          6 |         19 |
+| benchmarks                                                                                       |          1 |          3 |          0 |          2 |          5 |
+| src                                                                                              |         33 |      2,772 |        381 |        486 |      3,639 |
+| src (Files)                                                                                      |         11 |        818 |         98 |        162 |      1,078 |
+| src/allocator                                                                                    |          3 |        226 |         81 |         44 |        351 |
+| src/demo                                                                                         |          7 |        175 |         11 |         33 |        219 |
+| src/task                                                                                         |          4 |        308 |         13 |         50 |        371 |
+| src/utils                                                                                        |          8 |      1,245 |        178 |        197 |      1,620 |
+| src/utils (Files)                                                                                |          1 |          2 |          0 |          1 |          3 |
+| src/utils/algorithms                                                                             |          4 |        947 |        152 |        144 |      1,243 |
+| src/utils/algorithms (Files)                                                                     |          1 |          1 |          0 |          1 |          2 |
+| src/utils/algorithms/graph_interface                                                             |          3 |        946 |        152 |        143 |      1,241 |
+| src/utils/collections                                                                            |          3 |        296 |         26 |         52 |        374 |
+| tests                                                                                            |          3 |        143 |          4 |         29 |        176 |
++--------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------------------------+----------------------+------------+------------+------------+------------+
+| filename                                                                                         | language             | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------+----------------------+------------+------------+------------+------------+
+| /home/eden/ProjectRepo/my_ros/.cargo/config.toml                                                 | TOML                 |         13 |          0 |          6 |         19 |
+| /home/eden/ProjectRepo/my_ros/Cargo.lock                                                         | TOML                 |        322 |          2 |         45 |        369 |
+| /home/eden/ProjectRepo/my_ros/Cargo.toml                                                         | TOML                 |         61 |          7 |         10 |         78 |
+| /home/eden/ProjectRepo/my_ros/README.md                                                          | source.markdown.math |         11 |          0 |          8 |         19 |
+| /home/eden/ProjectRepo/my_ros/TODO.md                                                            | source.markdown.math |          3 |          0 |          3 |          6 |
+| /home/eden/ProjectRepo/my_ros/benchmarks/TODO.md                                                 | source.markdown.math |          3 |          0 |          2 |          5 |
+| /home/eden/ProjectRepo/my_ros/rustfmt.toml                                                       | TOML                 |          1 |          0 |          1 |          2 |
+| /home/eden/ProjectRepo/my_ros/src/allocator.rs                                                   | Rust                 |         94 |         11 |         28 |        133 |
+| /home/eden/ProjectRepo/my_ros/src/allocator/bump.rs                                              | Rust                 |         50 |         18 |         11 |         79 |
+| /home/eden/ProjectRepo/my_ros/src/allocator/fixed_size_block.rs                                  | Rust                 |         72 |         20 |         13 |        105 |
+| /home/eden/ProjectRepo/my_ros/src/allocator/linked_list.rs                                       | Rust                 |        104 |         43 |         20 |        167 |
+| /home/eden/ProjectRepo/my_ros/src/demo/concurrency.rs                                            | Rust                 |         86 |          2 |         11 |         99 |
+| /home/eden/ProjectRepo/my_ros/src/demo/cpu_exceptions.rs                                         | Rust                 |          4 |          0 |          1 |          5 |
+| /home/eden/ProjectRepo/my_ros/src/demo/double_fault.rs                                           | Rust                 |          6 |          0 |          1 |          7 |
+| /home/eden/ProjectRepo/my_ros/src/demo/heap_allocation.rs                                        | Rust                 |         22 |          0 |          8 |         30 |
+| /home/eden/ProjectRepo/my_ros/src/demo/memory.rs                                                 | Rust                 |         36 |          6 |          6 |         48 |
+| /home/eden/ProjectRepo/my_ros/src/demo/mod.rs                                                    | Rust                 |         13 |          3 |          4 |         20 |
+| /home/eden/ProjectRepo/my_ros/src/demo/println_eprintln.rs                                       | Rust                 |          8 |          0 |          2 |         10 |
+| /home/eden/ProjectRepo/my_ros/src/exit.rs                                                        | Rust                 |         13 |          0 |          2 |         15 |
+| /home/eden/ProjectRepo/my_ros/src/gdt.rs                                                         | Rust                 |         46 |          0 |          8 |         54 |
+| /home/eden/ProjectRepo/my_ros/src/interrupts.rs                                                  | Rust                 |        121 |         26 |         24 |        171 |
+| /home/eden/ProjectRepo/my_ros/src/lib.rs                                                         | Rust                 |         74 |          6 |         11 |         91 |
+| /home/eden/ProjectRepo/my_ros/src/main.rs                                                        | Rust                 |         41 |          2 |         12 |         55 |
+| /home/eden/ProjectRepo/my_ros/src/memory.rs                                                      | Rust                 |         94 |         31 |         22 |        147 |
+| /home/eden/ProjectRepo/my_ros/src/prelude.rs                                                     | Rust                 |          0 |          0 |          2 |          2 |
+| /home/eden/ProjectRepo/my_ros/src/serial.rs                                                      | Rust                 |         32 |          3 |          6 |         41 |
+| /home/eden/ProjectRepo/my_ros/src/task/executor.rs                                               | Rust                 |        103 |          5 |         17 |        125 |
+| /home/eden/ProjectRepo/my_ros/src/task/keyboard.rs                                               | Rust                 |         93 |          8 |         12 |        113 |
+| /home/eden/ProjectRepo/my_ros/src/task/mod.rs                                                    | Rust                 |         68 |          0 |         13 |         81 |
+| /home/eden/ProjectRepo/my_ros/src/task/simple_executor.rs                                        | Rust                 |         44 |          0 |          8 |         52 |
+| /home/eden/ProjectRepo/my_ros/src/test_framework.rs                                              | Rust                 |         11 |          0 |          3 |         14 |
+| /home/eden/ProjectRepo/my_ros/src/utils/algorithms/graph_interface/cached_greedy_extreme_path.rs | Rust                 |        441 |         75 |         64 |        580 |
+| /home/eden/ProjectRepo/my_ros/src/utils/algorithms/graph_interface/greedy_extreme_path.rs        | Rust                 |        409 |         77 |         64 |        550 |
+| /home/eden/ProjectRepo/my_ros/src/utils/algorithms/graph_interface/mod.rs                        | Rust                 |         96 |          0 |         15 |        111 |
+| /home/eden/ProjectRepo/my_ros/src/utils/algorithms/mod.rs                                        | Rust                 |          1 |          0 |          1 |          2 |
+| /home/eden/ProjectRepo/my_ros/src/utils/collections/lru_cache.rs                                 | Rust                 |        212 |         26 |         35 |        273 |
+| /home/eden/ProjectRepo/my_ros/src/utils/collections/mod.rs                                       | Rust                 |          3 |          0 |          2 |          5 |
+| /home/eden/ProjectRepo/my_ros/src/utils/collections/trie.rs                                      | Rust                 |         81 |          0 |         15 |         96 |
+| /home/eden/ProjectRepo/my_ros/src/utils/mod.rs                                                   | Rust                 |          2 |          0 |          1 |          3 |
+| /home/eden/ProjectRepo/my_ros/src/vga_buffer.rs                                                  | Rust                 |        292 |         19 |         44 |        355 |
+| /home/eden/ProjectRepo/my_ros/tests/heap_allocation.rs                                           | Rust                 |         62 |          1 |         11 |         74 |
+| /home/eden/ProjectRepo/my_ros/tests/should_panic.rs                                              | Rust                 |         29 |          0 |          6 |         35 |
+| /home/eden/ProjectRepo/my_ros/tests/stack_overflow.rs                                            | Rust                 |         52 |          3 |         12 |         67 |
+| Total                                                                                            |                      |      3,329 |        394 |        590 |      4,313 |
++--------------------------------------------------------------------------------------------------+----------------------+------------+------------+------------+------------+
