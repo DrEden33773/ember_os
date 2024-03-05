@@ -8,8 +8,8 @@ readme = "README.md"
 repository = "https://github.com/DrEden33773/ember_os"
 homepage = "https://github.com/DrEden33773/ember_os"
 license = "MIT/Apache-2.0"
-keywords = ["os", "kernel", "rust", "x86_64", "embedded", "rtos"]
-categories = ["embedded", "os", "kernel", "rust", "x86_64"]
+keywords = ["unix-like", "os", "kernel", "rust", "embedded"]
+categories = ["embedded", "os", "no-std", "memory-management"]
 
 [features]
 default = [
