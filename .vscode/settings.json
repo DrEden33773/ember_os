@@ -26,5 +26,6 @@
     "--target",
     "x86_64-my_ros.json"
   ],
-  "rust-analyzer.check.command": "clippy"
+  "rust-analyzer.check.command": "clippy",
+  "editor.tabSize": 2,
 }
