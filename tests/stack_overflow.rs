@@ -4,16 +4,16 @@
 
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
-use lazy_static::lazy_static;
-use my_ros::{
+use ember_os::{
   exit::{exit_qemu, QemuExitCode},
   serial_print, serial_println,
 };
+use lazy_static::lazy_static;
 use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-  my_ros::test_panic_handler(info)
+  ember_os::test_panic_handler(info)
 }
 
 lazy_static! {
@@ -23,7 +23,7 @@ lazy_static! {
       idt
         .double_fault
         .set_handler_fn(test_double_fault_handler)
-        .set_stack_index(my_ros::gdt::DOUBLE_FAULT_IST_INDEX);
+        .set_stack_index(ember_os::gdt::DOUBLE_FAULT_IST_INDEX);
     }
     idt
   };
@@ -35,7 +35,7 @@ extern "x86-interrupt" fn test_double_fault_handler(
 ) -> ! {
   serial_println!("[ok]\n");
   exit_qemu(QemuExitCode::Success);
-  my_ros::hlt_loop()
+  ember_os::hlt_loop()
 }
 
 pub fn init_test_idt() {
@@ -48,7 +48,7 @@ entry_point!(main);
 fn main(_boot_info: &'static BootInfo) -> ! {
   serial_print!("\nstack_overflow::stack_overflow ... ");
 
-  my_ros::gdt::init();
+  ember_os::gdt::init();
   init_test_idt();
 
   // trigger a stack overflow

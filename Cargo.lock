@@ -104,12 +104,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "embedded-io"
-version = "0.6.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "edd0f118536f44f5ccd48bcb8b111bdc3de888b58c74639dfb034a357d0f206d"
-
-[[package]]
 name = "ember_os"
 version = "0.1.0"
 dependencies = [
@@ -118,7 +112,6 @@ dependencies = [
  "cfg-if 1.0.0",
  "conquer-once",
  "crossbeam-queue",
- "embedded-io",
  "futures-util",
  "hashbrown",
  "lazy_static",
@@ -128,7 +121,7 @@ dependencies = [
  "pic8259",
  "spin 0.9.8",
  "uart_16550",
- "volatile",
+ "volatile 0.2.7",
  "x86_64",
 ]
 
@@ -332,6 +325,12 @@ checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
 
 [[package]]
 name = "volatile"
+version = "0.2.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f6b06ad3ed06fef1713569d547cdbdb439eafed76341820fb0e0344f29a41945"
+
+[[package]]
+name = "volatile"
 version = "0.4.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "442887c63f2c839b346c192d047a7c87e73d0689c9157b00b53dcc27dd5ea793"
@@ -345,7 +344,7 @@ dependencies = [
  "bit_field",
  "bitflags",
  "rustversion",
- "volatile",
+ "volatile 0.4.6",
 ]
 
 [[package]]

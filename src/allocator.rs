@@ -98,6 +98,13 @@ cfg_if::cfg_if! {
     #[global_allocator]
     static ALLOCATOR: Locked<BumpAllocator> = Locked::new(BumpAllocator::new());
 
+  } else {
+
+    use fixed_size_block::FixedSizeBlockAllocator;
+
+    #[global_allocator]
+    static ALLOCATOR: Locked<FixedSizeBlockAllocator> = Locked::new(FixedSizeBlockAllocator::new());
+
   }
 }
 

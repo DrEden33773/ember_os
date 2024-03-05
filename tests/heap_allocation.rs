@@ -1,7 +1,7 @@
 #![no_std]
 #![no_main]
 #![feature(custom_test_frameworks)]
-#![test_runner(my_ros::test_runner)]
+#![test_runner(ember_os::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
 extern crate alloc;
@@ -9,20 +9,20 @@ extern crate alloc;
 use alloc::{boxed::Box, rc::Rc, vec, vec::Vec};
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
-use my_ros::allocator::HEAP_SIZE;
+use ember_os::allocator::HEAP_SIZE;
 
 entry_point!(main);
 
 #[no_mangle]
 fn main(boot_info: &'static BootInfo) -> ! {
-  my_ros::minimum_init(boot_info);
+  ember_os::minimum_init(boot_info);
   test_main();
-  my_ros::hlt_loop();
+  ember_os::hlt_loop();
 }
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-  my_ros::test_panic_handler(info)
+  ember_os::test_panic_handler(info)
 }
 
 #[test_case]

@@ -1,7 +1,7 @@
 #![no_std]
 #![no_main]
 #![feature(custom_test_frameworks)]
-#![test_runner(my_ros::test_runner)]
+#![test_runner(ember_os::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
 use bootloader::{entry_point, BootInfo};
@@ -12,10 +12,10 @@ entry_point!(main);
 #[no_mangle]
 fn main(_boot_info: &'static BootInfo) -> ! {
   test_main();
-  my_ros::hlt_loop()
+  ember_os::hlt_loop()
 }
 
 #[panic_handler]
 pub fn panic(info: &PanicInfo) -> ! {
-  my_ros::test_panic_handler(info)
+  ember_os::test_panic_handler(info)
 }

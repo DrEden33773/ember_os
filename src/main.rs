@@ -1,14 +1,14 @@
 #![no_std]
 #![no_main]
 #![feature(custom_test_frameworks)]
-#![test_runner(my_ros::test_runner)]
+#![test_runner(ember_os::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
 extern crate alloc;
 
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
-use my_ros::{demo, eprintln, println, task};
+use ember_os::{demo, eprintln, println, task};
 
 entry_point!(main);
 
@@ -17,12 +17,12 @@ entry_point!(main);
 fn main(boot_info: &'static BootInfo) -> ! {
   #[cfg(test)]
   {
-    my_ros::minimum_init(boot_info);
+    ember_os::minimum_init(boot_info);
     test_main();
   }
 
   println!(" -*-*-*- My ROS -*-*-*- \n");
-  my_ros::minimum_init(boot_info);
+  ember_os::minimum_init(boot_info);
 
   println!(" ------- Synchronous Demos ------- \n");
   demo::run_synchronous_demos(boot_info);
@@ -39,13 +39,13 @@ fn main(boot_info: &'static BootInfo) -> ! {
 #[panic_handler]
 pub(crate) fn panic(info: &PanicInfo) -> ! {
   eprintln!("{}", info);
-  my_ros::hlt_loop()
+  ember_os::hlt_loop()
 }
 
 #[cfg(test)]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-  my_ros::test_panic_handler(info)
+  ember_os::test_panic_handler(info)
 }
 
 #[test_case]

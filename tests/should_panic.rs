@@ -6,7 +6,7 @@
 
 use bootloader::{entry_point, BootInfo};
 use core::panic::PanicInfo;
-use my_ros::{
+use ember_os::{
   exit::{exit_qemu, QemuExitCode},
   serial_print, serial_println,
 };
@@ -18,7 +18,7 @@ fn main(_boot_info: &'static BootInfo) -> ! {
   should_fail();
   serial_println!("[test did not panic]");
   exit_qemu(QemuExitCode::Failed);
-  my_ros::hlt_loop()
+  ember_os::hlt_loop()
 }
 
 fn should_fail() {
@@ -30,5 +30,5 @@ fn should_fail() {
 fn panic(_info: &PanicInfo) -> ! {
   serial_println!("[ok]\n");
   exit_qemu(QemuExitCode::Success);
-  my_ros::hlt_loop()
+  ember_os::hlt_loop()
 }
