@@ -57,7 +57,7 @@ impl<'a, T> IntoIterator for &'a Vec<T> {
       data: self.data,
       len: self.len,
       next_index: 0,
-      prev_index: self.len - 1,
+      prev_index: if self.is_empty() { 0 } else { self.len - 1 },
       is_head: false,
       marker: PhantomData,
     }
@@ -112,7 +112,7 @@ impl<'a, T> IntoIterator for &'a mut Vec<T> {
       data: self.data,
       len: self.len,
       next_index: 0,
-      prev_index: self.len - 1,
+      prev_index: if self.is_empty() { 0 } else { self.len - 1 },
       is_head: false,
       marker: PhantomData,
     }

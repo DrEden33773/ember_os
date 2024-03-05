@@ -9,11 +9,52 @@ const EXPAND_FACTOR: usize = 2;
 pub mod iter;
 pub mod slice;
 
+#[macro_export]
+macro_rules! vec {
+  () => {
+    $crate::utils::collections::vec::Vec::new()
+  };
+  ($elem:expr; $n:expr) => {
+    $crate::utils::collections::vec::from_elem($elem, $n)
+  };
+  ($($x:expr),*) => {
+    $crate::utils::collections::vec::slice::into_vec($crate::alloc::boxed::Box::new([$($x),*]))
+  };
+  ($($x:expr,)*) => { vec![$($x),*] };
+}
+
 #[derive(Debug)]
 pub struct Vec<T> {
   data: NonNull<T>,
   len: usize,
   capacity: usize,
+}
+
+impl<T> Vec<T> {
+  /// # Safety
+  ///
+  /// `data` should be a `leaked` pointer, used only once
+  pub unsafe fn from_unchecked(data: *mut T, len: usize) -> Self {
+    Self {
+      data: NonNull::new_unchecked(data),
+      len,
+      capacity: INIT_CAPACITY,
+    }
+  }
+}
+
+pub fn from_elem<T: Clone>(elem: T, n: usize) -> Vec<T> {
+  let mut vec = Vec::with_capacity(n);
+  for _ in 0..n {
+    vec.push(elem.clone());
+  }
+  vec
+}
+
+impl<T: Clone> Vec<T> {
+  pub fn from_elem(elem: T, n: usize) -> Self {
+    from_elem(elem, n)
+  }
 }
 
 impl<T: Clone> Clone for Vec<T> {
@@ -377,6 +418,32 @@ mod test_vector {
     assert_eq!(vec.capacity(), 0);
     assert_eq!(vec.len(), 0);
     drop(vec);
+  }
+}
+
+#[cfg(test)]
+mod test_macro {
+  use super::*;
+
+  #[test_case]
+  fn empty() {
+    let a = vec![];
+    let b = Vec::<i32>::new();
+    assert_eq!(a, b);
+  }
+
+  #[test_case]
+  fn repeating_sequence() {
+    let a = vec![1; 5];
+    let b = Vec::from_iter([1; 5]);
+    assert_eq!(a, b)
+  }
+
+  #[test_case]
+  fn flatten_sequence() {
+    let a = vec![1, 3, 5, 7, 9];
+    let b = Vec::from_iter([1, 3, 5, 7, 9]);
+    assert_eq!(a, b);
   }
 }
 
