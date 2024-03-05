@@ -1,5 +1,5 @@
 [package]
-name = "my_ros"
+name = "ember_os"
 version = "0.1.0"
 edition = "2021"
 
@@ -30,7 +30,7 @@ hashbrown = "*"
 lru = "0.12.3"
 cfg-if = "1.0.0"
 bootloader = { version = "*", features = ["map_physical_memory"] }
-volatile = "*"                                                     # 0.5.1
+volatile = "*"
 spin = "0.9.8"
 x86_64 = "*"
 uart_16550 = "*"

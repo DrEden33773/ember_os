@@ -110,6 +110,29 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "edd0f118536f44f5ccd48bcb8b111bdc3de888b58c74639dfb034a357d0f206d"
 
 [[package]]
+name = "ember_os"
+version = "0.1.0"
+dependencies = [
+ "async-recursion",
+ "bootloader",
+ "cfg-if 1.0.0",
+ "conquer-once",
+ "crossbeam-queue",
+ "embedded-io",
+ "futures-util",
+ "hashbrown",
+ "lazy_static",
+ "linked_list_allocator",
+ "lru",
+ "pc-keyboard",
+ "pic8259",
+ "spin 0.9.8",
+ "uart_16550",
+ "volatile",
+ "x86_64",
+]
+
+[[package]]
 name = "futures-core"
 version = "0.3.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -185,29 +208,6 @@ name = "maybe-uninit"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "60302e4db3a61da70c0cb7991976248362f30319e88850c487b9b95bbf059e00"
-
-[[package]]
-name = "my_ros"
-version = "0.1.0"
-dependencies = [
- "async-recursion",
- "bootloader",
- "cfg-if 1.0.0",
- "conquer-once",
- "crossbeam-queue",
- "embedded-io",
- "futures-util",
- "hashbrown",
- "lazy_static",
- "linked_list_allocator",
- "lru",
- "pc-keyboard",
- "pic8259",
- "spin 0.9.8",
- "uart_16550",
- "volatile",
- "x86_64",
-]
 
 [[package]]
 name = "once_cell"
