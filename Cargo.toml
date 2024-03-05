@@ -33,18 +33,18 @@ use_EfficientExecutor = []
 use_SelfDefinedLRUCache = []
 
 [dependencies]
-hashbrown = "*"
+hashbrown = "0.14.3"
 lru = "0.12.3"
 cfg-if = "1.0.0"
-bootloader = { version = "*", features = ["map_physical_memory"] }
+bootloader = { version = "0.9.28", features = ["map_physical_memory"] }
 volatile = "0.2.6"
 spin = "0.9.8"
-x86_64 = "*"
-uart_16550 = "*"
+x86_64 = "0.14.12"
+uart_16550 = "0.3.0"
 pic8259 = "0.10.4"
 pc-keyboard = "0.7.0"
 async-recursion = "1.0.4"
-linked_list_allocator = "*"
+linked_list_allocator = "0.10.5"
 
 [dependencies.conquer-once]
 version = "0.4.0"

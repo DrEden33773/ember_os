@@ -15,6 +15,7 @@ pub mod linked_list;
 
 pub const HEAP_START: usize = 0x_4444_4444_0000;
 pub const HEAP_SIZE: usize = 512 * 1024; // 512 KiB
+pub const HEAP_START_PTR: *mut u8 = HEAP_START as *mut u8;
 
 /// `zero-sized` type
 pub struct Dummy;
@@ -132,7 +133,7 @@ pub fn init_heap(
 
   // init `ALLOCATOR`
   unsafe {
-    ALLOCATOR.lock().init(HEAP_START, HEAP_SIZE);
+    ALLOCATOR.lock().init(HEAP_START_PTR, HEAP_SIZE);
   }
 
   Ok(())
