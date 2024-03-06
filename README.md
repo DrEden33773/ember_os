@@ -1,5 +1,7 @@
 # Ember OS
 
+> ## ❤️ Please give me a `Star` / `Follow` if you like this project! ❤️
+
 ## Brief
 
 A simple OS implemented in rust, referenced `Philipp Oppermann`'s `Writing an OS in Rust blog`.
