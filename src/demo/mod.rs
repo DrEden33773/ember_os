@@ -7,6 +7,7 @@ pub mod cpu_exceptions;
 pub mod double_fault;
 pub mod heap_allocation;
 pub mod memory;
+pub mod multithread;
 pub mod println_eprintln;
 
 #[inline]

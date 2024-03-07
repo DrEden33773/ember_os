@@ -45,6 +45,7 @@ pic8259 = "0.10.4"
 pc-keyboard = "0.7.0"
 async-recursion = "1.0.4"
 linked_list_allocator = "0.10.5"
+lock_api = "0.4.11"
 
 [dependencies.conquer-once]
 version = "0.4.0"
