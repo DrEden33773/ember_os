@@ -3,10 +3,9 @@ use super::*;
 use alloc::collections::BinaryHeap;
 use alloc::vec;
 use alloc::vec::Vec;
-use core::cmp::Ord;
 use core::hash::Hash;
 use core::num::NonZeroUsize;
-use core::ops::{ControlFlow, Fn};
+use core::ops::ControlFlow;
 use hashbrown::HashMap;
 
 cfg_if::cfg_if! {
