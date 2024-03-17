@@ -1,5 +1,5 @@
 [build]
-target = "x86_64-my_ros.json"
+target = "x86_64-ember_os.json"
 
 [unstable]
 build-std-features = ["compiler-builtins-mem"]
