@@ -31,4 +31,5 @@
   ],
   "rust-analyzer.check.command": "clippy",
   "editor.tabSize": 2,
+  "cargo.automaticCheck": false
 }
