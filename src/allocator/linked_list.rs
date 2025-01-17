@@ -1,5 +1,5 @@
 use super::{align_up, Locked};
-use alloc::alloc::{GlobalAlloc, Layout};
+use core::alloc::{GlobalAlloc, Layout};
 use core::{mem, ptr};
 
 struct ListNode {
@@ -66,6 +66,12 @@ impl LinkedListAllocator {
     let node_ptr = addr as *mut ListNode;
     node_ptr.write(node);
     self.head.next = Some(&mut *node_ptr);
+  }
+}
+
+impl Default for LinkedListAllocator {
+  fn default() -> Self {
+    Self::new()
   }
 }
 

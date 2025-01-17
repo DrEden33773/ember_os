@@ -27,7 +27,7 @@
   "rust-analyzer.interpret.tests": true,
   "rust-analyzer.check.extraArgs": [
     "--target",
-    "x86_64-my_ros.json"
+    "x86_64-ember_os.json"
   ],
   "rust-analyzer.check.command": "clippy",
   "editor.tabSize": 2,

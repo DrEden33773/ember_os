@@ -155,10 +155,9 @@ impl<K: Hash + Eq, V> LruCache<K, V> {
     let node = Box::leak(Box::new(LruCacheNode::new(key, value))).into();
 
     // remove old key (if it exists)
-    let old_node = self.map.remove(&KeyRef(node)).map(|node| {
+    let old_node = self.map.remove(&KeyRef(node)).inspect(|&node| {
       // it exists, then detach
       self.detach(node);
-      node
     });
 
     // if it's over capacity: remove tail node

@@ -1,5 +1,5 @@
 use super::Locked;
-use alloc::alloc::{GlobalAlloc, Layout};
+use core::alloc::{GlobalAlloc, Layout};
 use core::{
   mem,
   ptr::{self, NonNull},
@@ -40,6 +40,12 @@ impl FixedSizeBlockAllocator {
   /// This method must be called `only once`.
   pub unsafe fn init(&mut self, heap_start_ptr: *mut u8, heap_size: usize) {
     self.fallback_allocator.init(heap_start_ptr, heap_size);
+  }
+}
+
+impl Default for FixedSizeBlockAllocator {
+  fn default() -> Self {
+    Self::new()
   }
 }
 

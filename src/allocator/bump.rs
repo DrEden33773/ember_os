@@ -1,7 +1,7 @@
 #![allow(deprecated)]
 
 use super::{align_up, Locked};
-use alloc::alloc::{GlobalAlloc, Layout};
+use core::alloc::{GlobalAlloc, Layout};
 use core::ptr;
 
 /// Stack Allocator
@@ -38,6 +38,12 @@ impl BumpAllocator {
     self.heap_start = heap_start;
     self.heap_end = heap_start + heap_size;
     self.next = heap_start;
+  }
+}
+
+impl Default for BumpAllocator {
+  fn default() -> Self {
+    Self::new()
   }
 }
 

@@ -441,7 +441,7 @@ mod test_macro {
 
   #[test_case]
   fn flatten_sequence() {
-    let a = vec![1, 3, 5, 7, 9];
+    let a: Vec<i32> = vec![1, 3, 5, 7, 9];
     let b = Vec::from_iter([1, 3, 5, 7, 9]);
     assert_eq!(a, b);
   }

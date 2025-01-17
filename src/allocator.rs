@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-use alloc::alloc::{GlobalAlloc, Layout};
+use core::alloc::{GlobalAlloc, Layout};
 use core::ptr::null_mut;
 use x86_64::{
   structures::paging::{
